@@ -53,7 +53,6 @@
       overflow-x: hidden;
     }
 
-    /* Ene Cyber Grid Background */
     .ene-grid-bg {
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.12) 0%, transparent 60%),
@@ -69,7 +68,6 @@
       text-shadow: 0 0 12px rgba(0, 240, 255, 0.75);
     }
 
-    /* Ene Floating Bottom Character Animation */
     .ene-floating-character {
       animation: eneFloat 4s ease-in-out infinite alternate;
       filter: drop-shadow(0 0 22px rgba(0, 240, 255, 0.55));
@@ -79,7 +77,6 @@
       100% { transform: translateY(-16px) rotate(-1.5deg); }
     }
 
-    /* Error Icon Glitch Pulse */
     .ene-icon-pulse {
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.6), inset 0 0 8px rgba(255, 0, 85, 0.4);
       animation: borderPulse 2.4s ease-in-out infinite alternate;
@@ -89,7 +86,6 @@
       100% { border-color: #ff0055; box-shadow: 0 0 22px rgba(255, 0, 85, 0.85); }
     }
 
-    /* Cyber Equalizer */
     .eq-bar { animation: bounceEqualizer 1.2s ease-in-out infinite alternate; }
     .eq-bar:nth-child(2) { animation-delay: 0.2s; }
     .eq-bar:nth-child(3) { animation-delay: 0.4s; }
@@ -101,7 +97,6 @@
       100% { height: 22px; }
     }
 
-    /* Cyber Glitch Disappearance */
     .cyber-dissolve {
       animation: eneDissolve 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
@@ -241,7 +236,7 @@
         </div>
       </div>
 
-      <!-- Container: Form or Holo Pass (แถบ PROTECTED RESULTS ถูกตัดออกเรียบร้อยแล้ว) -->
+      <!-- Container: Form or Holo Pass (ขึ้นโชว์ทันทีเมื่อเข้าเว็บ) -->
       <div id="voterMainCardContainer">
         <!-- Rendered by JavaScript -->
       </div>
@@ -408,7 +403,6 @@
 
   <script>
     // --- 1. CLOUD REAL-TIME DATABASE ENGINE ---
-    // ใช้ Firebase Realtime Database แบบ Open Access ที่ทุกคนสามารถดึงข้อมูลสดข้ามเครื่องได้ทันที
     const firebaseConfig = {
       databaseURL: "https://mekaku-cosplay-2570-default-rtdb.asia-southeast1.firebasedatabase.app"
     };
@@ -421,7 +415,7 @@
       db = firebase.database();
       isFirebaseReady = true;
     } catch (e) {
-      console.warn("Local storage fallback enabled:", e);
+      console.warn("Fallback Local mode:", e);
     }
 
     // Character Presets (No Ene, No Kuroha)
@@ -455,8 +449,13 @@
     let selectedSlotId = null;
     let liveEntries = [];
 
-    // ดักฟังการเปลี่ยนแปลงจาก Cloud แบบสดๆ ทุกเครื่องจะอัปเดตและตัดคิวทิ้งพร้อมกันทันที
+    // ดึงข้อมูล Realtime: อัปเดตตัดคิวทิ้งทันที
     function initRealtimeListener() {
+      // ดึงจาก local มาเรนเดอร์ก่อนทันที ไม่ต้องรอเน็ต
+      const stored = localStorage.getItem('mekaku_ene_entries_v3');
+      liveEntries = stored ? JSON.parse(stored) : [];
+      renderVoterView();
+
       if (isFirebaseReady && db) {
         db.ref('mekakucity_slots_booked').on('value', (snapshot) => {
           const val = snapshot.val();
@@ -468,16 +467,10 @@
           } else {
             liveEntries = [];
           }
-          // บันทึกสำรองในเครื่อง
           localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
           renderVoterView();
           if (isAdminLoggedIn) renderAdminView();
         });
-      } else {
-        // ดึงจาก LocalStorage สำรอง
-        const stored = localStorage.getItem('mekaku_ene_entries_v3');
-        liveEntries = stored ? JSON.parse(stored) : [];
-        renderVoterView();
       }
     }
 
@@ -496,7 +489,7 @@
       } catch (e) {}
     }
 
-    // --- RENDER VOTER VIEW (คิวที่ถูกเลือกแล้วจะหายไป ไม่แสดงให้คนอื่นเห็น) ---
+    // --- RENDER VOTER VIEW (เปิดหน้าเว็บปุ๊บ คิวต้องขึ้นทันที) ---
     function renderVoterView() {
       const container = document.getElementById('voterMainCardContainer');
       if (!container) return;
@@ -570,14 +563,14 @@
         return;
       }
 
-      // สำหรับคนที่ 2, 3, 4: ดึงเฉพาะคิวที่ "ยังไม่มีคนจอง" มาแสดง (คิวที่โดนจองแล้วจะหายไปทันที)
+      // สำหรับผู้ลงทะเบียน: กรองเฉพาะคิวที่ "ยังไม่มีคนจอง" มาแสดง (คิวที่โดนจองแล้วจะหายไปทันที)
       const bookedSlotIds = liveEntries.map(e => e.slotId);
       const availableSlots = TIME_SLOTS.filter(s => !bookedSlotIds.includes(s.id));
 
       container.innerHTML = `
         <div id="votingFormWrapper" class="space-y-6">
           
-          <!-- Step 1: Select Time Slot -->
+          <!-- Step 1: Select Time Slot (โชว์ทันที) -->
           <div class="bg-[#081226]/90 rounded-2xl border border-cyan-900/40 p-5 sm:p-7 shadow-xl">
             <div class="flex items-center justify-between mb-4">
               <div>
@@ -711,14 +704,13 @@
       }
     }
 
-    // --- กดยืนยันบันทึกคิว (ตัดคิวออกแบบ Realtime ทันที) ---
+    // --- กดยืนยันบันทึกคิว ---
     function submitVoteAction() {
       if (!selectedSlotId) {
         showToast('กรุณาคลิกเลือกช่วงเวลาคิวถ่ายเดี่ยว', 'error');
         return;
       }
 
-      // เช็กสดว่าคิวนี้ถูกเพื่อนคนอื่นกดตัดหน้าไปหรือยัง
       const isAlreadyTaken = liveEntries.some(e => e.slotId === selectedSlotId);
       if (isAlreadyTaken) {
         showToast('อุ๊ปส์! คิวนี้เพิ่งมีเพื่อนกดจองไปแล้วค่ะ กรุณาเลือกคิวอื่นนะคะ', 'error');
@@ -749,7 +741,6 @@
 
       const formWrapper = document.getElementById('votingFormWrapper');
 
-      // Confetti
       try {
         confetti({
           particleCount: 65,
@@ -759,7 +750,6 @@
         });
       } catch (e) {}
 
-      // Cyber Dissolve
       if (formWrapper) {
         formWrapper.classList.add('cyber-dissolve');
       }
@@ -773,7 +763,6 @@
         timestamp: new Date().toISOString()
       };
 
-      // บันทึกขึ้น Cloud เพื่อให้คิวหายไปจากหน้าจอของทุกคน
       if (isFirebaseReady && db) {
         db.ref('mekakucity_slots_booked').push(newEntry);
       } else {
@@ -1059,7 +1048,7 @@
         .replace(/'/g, "&#039;");
     }
 
-    // Initialize application on page load
+    // สั่งวาดหน้าจอทันทีที่โหลดหน้าเว็บ ไม่ต้องรอกดปุ่มใดๆ
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       initRealtimeListener();
