@@ -16,7 +16,7 @@
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- Firebase Realtime Database SDK (เชื่อมต่อฐานข้อมูลออนไลน์สด) -->
+  <!-- Firebase SDK สำหรับ Realtime Sync ข้ามเครื่อง -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
@@ -195,7 +195,7 @@
         </div>
       </div>
 
-      <!-- Center Logo: Mekakucity Actors (Centered) -->
+      <!-- Center Logo: Mekakucity Actors (Small, Sleek, Centered) -->
       <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center pointer-events-none sm:pointer-events-auto">
         <div class="px-3 py-1 rounded-lg bg-[#040914]/80 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,240,255,0.2)] flex items-center justify-center">
           <img 
@@ -272,7 +272,7 @@
           <div class="mt-4 flex items-start gap-3 bg-[#030814]/70 border border-cyan-900/50 p-3.5 rounded-xl text-xs text-slate-300 font-mono">
             <i data-lucide="bot" class="w-5 h-5 text-ene-cyan flex-shrink-0 mt-0.5"></i>
             <span class="leading-relaxed">
-              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ ＼(≧▽≦)／ <span class="text-pink-400 font-bold">เมื่อใครกดเลือกแล้ว คิวนั้นจะหายวับไปจากหน้าจอทุกคนทันทีแบบ Real-time เลยนะคะ!</span> และผลจะส่งตรงเข้าหลังบ้านแอดมินคนเดียวเท่านั้นค่ะ~ Enjoy o(≧▽≦)o"
+              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ ＼(≧▽≦)／ <span class="text-pink-400 font-semibold">เมื่อใครกดเลือกแล้ว คิวนั้นจะหายวับไปจากหน้าจอทุกคนทันทีแบบ Real-time เลยนะคะ!</span> และผลจะส่งตรงเข้าหลังบ้านแอดมินคนเดียวเท่านั้นค่ะ~ Enjoy o(≧▽≦)o"
             </span>
           </div>
         </div>
@@ -284,6 +284,11 @@
           <i data-lucide="shield-check" class="w-4 h-4 text-ene-cyan"></i>
           <span>PROTECTED RESULTS // ผลโหวตเห็นได้เฉพาะเอเนะเท่านั้นค่ะ ฮิ ๆ (─‿‿─)</span>
         </div>
+        <button onclick="resetMyVotes()" class="text-ene-cyan hover:text-cyan-300 font-mono text-xs flex items-center gap-1.5 transition underline-offset-4 hover:underline">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          [ทดสอบ: ล้างสถานะการเลือกของฉัน]
+        </button>
+      </div>
 
       <!-- Container: Form or Holo Pass -->
       <div id="voterMainCardContainer">
@@ -452,6 +457,7 @@
 
   <script>
     // --- 1. FIREBASE REALTIME SETUP ---
+    // นำ databaseURL จากโปรเจกต์ Firebase ของคุณมาใส่ตรงนี้
     const firebaseConfig = {
       databaseURL: "https://mekakucity-queue-default-rtdb.firebaseio.com"
     };
@@ -464,7 +470,7 @@
       db = firebase.database();
       isFirebaseReady = true;
     } catch (e) {
-      console.warn("Firebase Init Notice: Running in Local Fallback mode.", e);
+      console.warn("Firebase Running in Local Fallback mode:", e);
     }
 
     // Mekakucity Actors Character presets
@@ -496,7 +502,7 @@
     const ADMIN_PASS = 'Mm08061998';
     let isAdminLoggedIn = false;
     let selectedSlotId = null;
-    let liveEntries = []; // บันทึกข้อมูลคิวที่จองแล้วสด ๆ จาก Firebase
+    let liveEntries = [];
 
     // ดึงข้อมูลและดักฟัง Realtime จาก Firebase เมื่อมีคนจอง ทุกเครื่องจะตัดคิวนั้นทิ้งทันที
     function initDatabaseListener() {
@@ -550,14 +556,14 @@
       } catch (e) {}
     }
 
-    // --- RENDER VOTER VIEW ---
+    // --- RENDER VOTER VIEW (ตัดคิวที่ถูกเลือกออกทันที) ---
     function renderVoterView() {
       const container = document.getElementById('voterMainCardContainer');
       if (!container) return;
 
       const myRecord = getMySubmission();
 
-      // Case 1: Already Voted -> Show Cyber Holographic Access Pass
+      // กรณีที่ 1: ตัวเองเลือกไปแล้ว -> แสดงตั๋ว Ene Pass
       if (myRecord) {
         const slot = TIME_SLOTS.find(s => s.id === myRecord.slotId);
         container.innerHTML = `
@@ -624,7 +630,7 @@
         return;
       }
 
-      // Case 2: Not Voted -> กรองเฉพาะคิวที่ "ยังไม่มีคนจอง" (คิวที่จองแล้วจะหายวับไปทันที)
+      // กรณีที่ 2: ยังไม่ได้เลือก -> กรองเฉพาะคิวที่ "ยังไม่มีใครจอง" (คิวที่จองแล้วจะหายไปทันที)
       const bookedSlotIds = liveEntries.map(e => e.slotId);
       const availableSlots = TIME_SLOTS.filter(s => !bookedSlotIds.includes(s.id));
 
@@ -765,14 +771,14 @@
       }
     }
 
-    // --- ฟังก์ชันบันทึกคิว (Real-time Online Push) ---
+    // --- กดยืนยันโหวต (ส่งขึ้นคลาวด์สด ๆ เพื่อลบคิวออกจากหน้าจอทุกคน) ---
     function submitVoteAction() {
       if (!selectedSlotId) {
         showToast('กรุณาคลิกเลือกช่วงเวลาคิวถ่ายเดี่ยว', 'error');
         return;
       }
 
-      // ตรวจสอบสดอีกครั้งว่าคิวนี้มีคนแย่งกดไปก่อนหน้าหรือไม่
+      // เช็กสดอีกครั้งว่ามีคนตัดหน้าไปก่อนหรือไม่
       const isAlreadyTaken = liveEntries.some(e => e.slotId === selectedSlotId);
       if (isAlreadyTaken) {
         showToast('อุ๊ปส์! คิวนี้เพิ่งมีเพื่อนกดจองไปแล้วค่ะ กรุณาเลือกคิวอื่นนะคะ', 'error');
@@ -813,7 +819,7 @@
         });
       } catch (e) {}
 
-      // 2. Play cyber dissolve animation
+      // 2. Cyber Dissolve Animation
       if (formWrapper) {
         formWrapper.classList.add('cyber-dissolve');
       }
@@ -1065,7 +1071,7 @@
     function copySummaryToClipboard() {
       const entries = liveEntries;
       let text = `📸 ตารางสรุปคิวถ่ายเดี่ยว - โปรคอส Mekakucity Actors\n`;
-      text += `📅 วันพฤหัสบดีที่ 24 เมษายน 2570\n`;
+      text += `📅 วันเสาร์ที่ 24 เมษายน 2570\n`;
       text += `==============================================\n`;
 
       TIME_SLOTS.forEach(slot => {
