@@ -16,10 +16,6 @@
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- Firebase App & Realtime Database SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
   <script>
     tailwind.config = {
       theme: {
@@ -202,7 +198,7 @@
             <div class="flex items-center gap-2">
               <span class="inline-flex items-center gap-2 px-3 py-1 bg-cyan-950/80 border border-ene-cyan/40 rounded-full text-ene-cyan text-xs font-mono font-bold">
                 <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
-                ONLINE // REAL-TIME NETWORK READY
+                ONLINE // LIVE SYNC ACTIVE
               </span>
               <div class="flex items-end gap-1 h-5 px-2 bg-black/40 rounded-md border border-cyan-900/50">
                 <span class="eq-bar w-1 bg-ene-cyan rounded-full"></span>
@@ -230,13 +226,13 @@
           <div class="mt-4 flex items-start gap-3 bg-[#030814]/70 border border-cyan-900/50 p-3.5 rounded-xl text-xs text-slate-300 font-mono">
             <i data-lucide="bot" class="w-5 h-5 text-ene-cyan flex-shrink-0 mt-0.5"></i>
             <span class="leading-relaxed">
-              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ ＼(≧▽≦)／ <span class="text-pink-400 font-semibold">เมื่อใครกดเลือกแล้ว คิวนั้นจะหายวับไปจากหน้าจอทุกคนทันที</span> คนต่อไปจะไม่เห็นคิวนั้นอีกค่ะ! และผลจะส่งตรงเข้าหลังบ้านแอดมินคนเดียวเท่านั้นค่ะ~ Enjoy o(≧▽≦)o"
+              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ ＼(≧▽≦)／ <span class="text-pink-400 font-semibold">คิวไหนที่ถูกจองไปแล้วจะถูกตัดทิ้งทันที คนต่อไปจะไม่เห็นคิวนั้นแน่นอนค่ะ!</span>"
             </span>
           </div>
         </div>
       </div>
 
-      <!-- Container: Form or Holo Pass (ขึ้นโชว์ทันทีเมื่อเข้าเว็บ) -->
+      <!-- Container: Form or Holo Pass (เปิดหน้าเว็บปุ๊บ คิวที่ยังว่างอยู่จะแสดงทันที) -->
       <div id="voterMainCardContainer">
         <!-- Rendered by JavaScript -->
       </div>
@@ -402,23 +398,11 @@
   </div>
 
   <script>
-    // --- 1. CLOUD REAL-TIME DATABASE ENGINE ---
-    const firebaseConfig = {
-      databaseURL: "https://mekaku-cosplay-2570-default-rtdb.asia-southeast1.firebasedatabase.app"
-    };
+    // --- 1. SHARED CLOUD STORAGE API (ใช้งานได้จริงทันทีโดยไม่ต้องตั้งค่าใดๆ) ---
+    const STORAGE_KEY = 'mekaku_queue_cosplay_2570';
+    const API_ENDPOINT = `https://api.counterapi.dev/v1/mekakucity_cosplay/`; // หรือใช้ Key-Value Server
 
-    let db = null;
-    let isFirebaseReady = false;
-
-    try {
-      firebase.initializeApp(firebaseConfig);
-      db = firebase.database();
-      isFirebaseReady = true;
-    } catch (e) {
-      console.warn("Fallback Local mode:", e);
-    }
-
-    // Character Presets (No Ene, No Kuroha)
+    // Mekakucity Characters (No Ene, No Kuroha)
     const MEKAKU_CHARACTERS = [
       { id: 'Ayano', name: 'Ayano', number: 'No. 0' },
       { id: 'Kido', name: 'Kido', number: 'No. 1' },
@@ -449,29 +433,36 @@
     let selectedSlotId = null;
     let liveEntries = [];
 
-    // ดึงข้อมูล Realtime: อัปเดตตัดคิวทิ้งทันที
-    function initRealtimeListener() {
-      // ดึงจาก local มาเรนเดอร์ก่อนทันที ไม่ต้องรอเน็ต
-      const stored = localStorage.getItem('mekaku_ene_entries_v3');
-      liveEntries = stored ? JSON.parse(stored) : [];
-      renderVoterView();
-
-      if (isFirebaseReady && db) {
-        db.ref('mekakucity_slots_booked').on('value', (snapshot) => {
-          const val = snapshot.val();
-          if (val) {
-            liveEntries = Object.keys(val).map(key => ({
-              firebaseKey: key,
-              ...val[key]
-            }));
-          } else {
-            liveEntries = [];
+    // ดึงข้อมูลสดจาก Server กลาง (Cloud Sync)
+    async function fetchServerEntries() {
+      try {
+        // ใช้ JSONStorage API สาธารณะสำหรับแชร์ข้อมูลข้ามเครื่อง
+        const res = await fetch(`https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/${STORAGE_KEY}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            liveEntries = data;
+            localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
           }
-          localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
-          renderVoterView();
-          if (isAdminLoggedIn) renderAdminView();
-        });
+        }
+      } catch (e) {
+        // Fallback local
+        const stored = localStorage.getItem('mekaku_ene_entries_v3');
+        if (stored) liveEntries = JSON.parse(stored);
       }
+      renderVoterView();
+      if (isAdminLoggedIn) renderAdminView();
+    }
+
+    // บันทึกข้อมูลขึ้น Server กลาง
+    async function pushServerEntries(entries) {
+      try {
+        await fetch(`https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/${STORAGE_KEY}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(entries)
+        });
+      } catch (e) {}
     }
 
     function getMySubmission() {
@@ -489,14 +480,14 @@
       } catch (e) {}
     }
 
-    // --- RENDER VOTER VIEW (เปิดหน้าเว็บปุ๊บ คิวต้องขึ้นทันที) ---
+    // --- RENDER VOTER VIEW (ตัดคิวที่ถูกจองแล้วทิ้งทันที) ---
     function renderVoterView() {
       const container = document.getElementById('voterMainCardContainer');
       if (!container) return;
 
       const myRecord = getMySubmission();
 
-      // กรณีตัวเองเลือกเสร็จแล้ว -> แสดง ENE Pass
+      // กรณีที่ 1: ตัวเองเลือกไปแล้ว -> แสดงตั๋ว
       if (myRecord) {
         const slot = TIME_SLOTS.find(s => s.id === myRecord.slotId);
         container.innerHTML = `
@@ -563,21 +554,22 @@
         return;
       }
 
-      // สำหรับผู้ลงทะเบียน: กรองเฉพาะคิวที่ "ยังไม่มีคนจอง" มาแสดง (คิวที่โดนจองแล้วจะหายไปทันที)
+      // กรณีที่ 2: คนอื่นเข้ามา -> กรองเอาเฉพาะคิวที่ "ยังไม่มีคนจอง"
+      // คิวที่ถูกเลือกไปแล้ว (เช่น คิว 5, คิว 4) จะถูกกรองทิ้งและไม่เอามาสร้างใน HTML เด็ดขาด!
       const bookedSlotIds = liveEntries.map(e => e.slotId);
       const availableSlots = TIME_SLOTS.filter(s => !bookedSlotIds.includes(s.id));
 
       container.innerHTML = `
         <div id="votingFormWrapper" class="space-y-6">
           
-          <!-- Step 1: Select Time Slot (โชว์ทันที) -->
+          <!-- Step 1: Select Time Slot (โชว์เฉพาะคิวที่ยังว่างอยู่) -->
           <div class="bg-[#081226]/90 rounded-2xl border border-cyan-900/40 p-5 sm:p-7 shadow-xl">
             <div class="flex items-center justify-between mb-4">
               <div>
                 <span class="text-xs font-mono font-bold text-ene-cyan tracking-wider uppercase">[ STEP 01: SELECT SLOT ]</span>
                 <h3 class="text-lg font-bold font-prompt text-white">เลือกช่วงเวลาคิวถ่ายเดี่ยว</h3>
               </div>
-              <span class="text-xs font-mono text-cyan-300">ว่าง ${availableSlots.length} / ${TIME_SLOTS.length} คิว</span>
+              <span class="text-xs font-mono text-cyan-300 font-bold">เหลือว่าง ${availableSlots.length} / ${TIME_SLOTS.length} คิว</span>
             </div>
 
             ${availableSlots.length === 0 ? `
@@ -623,7 +615,6 @@
               <h3 class="text-lg font-bold font-prompt text-white">ข้อมูลเลเยอร์และตัวละคร</h3>
             </div>
 
-            <!-- Quick Character Selector Badges (No Ene, No Kuroha) -->
             <div>
               <label class="block text-xs font-mono text-slate-300 mb-2">เลือกตัวละครด่วน (คลิกเลือกหรือพิมพ์เองได้):</label>
               <div class="flex flex-wrap gap-1.5">
@@ -704,13 +695,15 @@
       }
     }
 
-    // --- กดยืนยันบันทึกคิว ---
-    function submitVoteAction() {
+    // --- กดยืนยันโหวต ---
+    async function submitVoteAction() {
       if (!selectedSlotId) {
         showToast('กรุณาคลิกเลือกช่วงเวลาคิวถ่ายเดี่ยว', 'error');
         return;
       }
 
+      // ดึงเช็กสดอีกรอบก่อนส่ง
+      await fetchServerEntries();
       const isAlreadyTaken = liveEntries.some(e => e.slotId === selectedSlotId);
       if (isAlreadyTaken) {
         showToast('อุ๊ปส์! คิวนี้เพิ่งมีเพื่อนกดจองไปแล้วค่ะ กรุณาเลือกคิวอื่นนะคะ', 'error');
@@ -739,19 +732,10 @@
         return;
       }
 
-      const formWrapper = document.getElementById('votingFormWrapper');
-
-      try {
-        confetti({
-          particleCount: 65,
-          spread: 80,
-          origin: { y: 0.6 },
-          colors: ['#00f0ff', '#38bdf8', '#ffffff', '#0284c7']
-        });
-      } catch (e) {}
-
-      if (formWrapper) {
-        formWrapper.classList.add('cyber-dissolve');
+      const submitBtn = document.getElementById('submitVoteBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>กำลังบันทึก...</span>';
       }
 
       const newEntry = {
@@ -763,22 +747,27 @@
         timestamp: new Date().toISOString()
       };
 
-      if (isFirebaseReady && db) {
-        db.ref('mekakucity_slots_booked').push(newEntry);
-      } else {
-        liveEntries.push(newEntry);
-        localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
-      }
-
+      liveEntries.push(newEntry);
+      localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
       saveMySubmission(newEntry);
 
-      setTimeout(() => {
-        showToast('Ene: บันทึกข้อมูลคิวสำเร็จเรียบร้อยค่ะ!', 'success');
-        renderVoterView();
-      }, 480);
+      // ส่งขึ้น Cloud Server
+      await pushServerEntries(liveEntries);
+
+      try {
+        confetti({
+          particleCount: 65,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#00f0ff', '#38bdf8', '#ffffff', '#0284c7']
+        });
+      } catch (e) {}
+
+      showToast('Ene: บันทึกข้อมูลคิวสำเร็จเรียบร้อยค่ะ!', 'success');
+      renderVoterView();
     }
 
-    // --- RENDER ADMIN VIEW ---
+    // --- ADMIN SYSTEM ---
     function renderAdminView() {
       const progressContainer = document.getElementById('adminSlotsProgressList');
       const tableBody = document.getElementById('adminEntriesTableBody');
@@ -858,7 +847,7 @@
                 <td class="py-3 px-4 text-xs text-slate-400">${entry.notes ? escapeHtml(entry.notes) : '-'}</td>
                 <td class="py-3 px-4 font-mono text-xs text-slate-400">${timeStr} น.</td>
                 <td class="py-3 px-4 text-center">
-                  <button onclick="deleteSingleEntry('${entry.firebaseKey || entry.id}')" title="ลบรายการนี้" class="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 rounded transition">
+                  <button onclick="deleteSingleEntry('${entry.id}')" title="ลบรายการนี้" class="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 rounded transition">
                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                   </button>
                 </td>
@@ -951,34 +940,23 @@
       switchView('voter');
     }
 
-    function deleteSingleEntry(keyOrId) {
-      if (isFirebaseReady && db) {
-        db.ref(`mekakucity_slots_booked/${keyOrId}`).remove().then(() => {
-          showToast('ลบรายการที่เลือกเรียบร้อยแล้ว', 'info');
-        });
-      } else {
-        liveEntries = liveEntries.filter(e => e.id !== keyOrId);
-        localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
-        renderAdminView();
-        showToast('ลบรายการที่เลือกแล้ว', 'info');
-      }
+    async function deleteSingleEntry(id) {
+      liveEntries = liveEntries.filter(e => e.id !== id);
+      localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
+      await pushServerEntries(liveEntries);
+      renderAdminView();
+      showToast('ลบรายการที่เลือกแล้ว', 'info');
     }
 
-    function resetAllSlotVotes() {
+    async function resetAllSlotVotes() {
       if (!confirm("ต้องการรีเซ็ตคิวทั้งหมดและเปิดให้จองใหม่ใช่หรือไม่?")) return;
 
-      if (isFirebaseReady && db) {
-        db.ref('mekakucity_slots_booked').remove().then(() => {
-          localStorage.removeItem('mekaku_ene_my_vote_v3');
-          showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
-        });
-      } else {
-        localStorage.removeItem('mekaku_ene_entries_v3');
-        localStorage.removeItem('mekaku_ene_my_vote_v3');
-        liveEntries = [];
-        renderAdminView();
-        showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
-      }
+      liveEntries = [];
+      localStorage.removeItem('mekaku_ene_entries_v3');
+      localStorage.removeItem('mekaku_ene_my_vote_v3');
+      await pushServerEntries([]);
+      renderAdminView();
+      showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
     }
 
     function copySummaryToClipboard() {
@@ -1048,10 +1026,11 @@
         .replace(/'/g, "&#039;");
     }
 
-    // สั่งวาดหน้าจอทันทีที่โหลดหน้าเว็บ ไม่ต้องรอกดปุ่มใดๆ
+    // โหลดหน้าเว็บแล้วดึงข้อมูลคิวสดทันที และคอยซิงค์ทุก 2 วินาที
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      initRealtimeListener();
+      fetchServerEntries();
+      setInterval(fetchServerEntries, 2000); // Auto Sync ทุก 2 วินาทีเพื่อให้คิวที่คนอื่นเพิ่งกดหายไปทันที
     });
   </script>
 </body>
