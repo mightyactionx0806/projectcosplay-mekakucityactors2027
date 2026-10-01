@@ -16,7 +16,7 @@
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- Firebase SDK สำหรับ Realtime Sync ข้ามเครื่อง -->
+  <!-- Firebase App & Realtime Database SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
@@ -62,7 +62,6 @@
       background-size: 100% 100%, 36px 36px, 36px 36px;
     }
 
-    /* Glowing Cyber Effects */
     .glow-cyan {
       box-shadow: 0 0 25px rgba(0, 240, 255, 0.28);
     }
@@ -76,12 +75,8 @@
       filter: drop-shadow(0 0 22px rgba(0, 240, 255, 0.55));
     }
     @keyframes eneFloat {
-      0% {
-        transform: translateY(0px) rotate(0deg);
-      }
-      100% {
-        transform: translateY(-16px) rotate(-1.5deg);
-      }
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-16px) rotate(-1.5deg); }
     }
 
     /* Error Icon Glitch Pulse */
@@ -90,20 +85,12 @@
       animation: borderPulse 2.4s ease-in-out infinite alternate;
     }
     @keyframes borderPulse {
-      0% {
-        border-color: #00f0ff;
-        box-shadow: 0 0 14px rgba(0, 240, 255, 0.65);
-      }
-      100% {
-        border-color: #ff0055;
-        box-shadow: 0 0 22px rgba(255, 0, 85, 0.85);
-      }
+      0% { border-color: #00f0ff; box-shadow: 0 0 14px rgba(0, 240, 255, 0.65); }
+      100% { border-color: #ff0055; box-shadow: 0 0 22px rgba(255, 0, 85, 0.85); }
     }
 
-    /* Cyber Equalizer Animation */
-    .eq-bar {
-      animation: bounceEqualizer 1.2s ease-in-out infinite alternate;
-    }
+    /* Cyber Equalizer */
+    .eq-bar { animation: bounceEqualizer 1.2s ease-in-out infinite alternate; }
     .eq-bar:nth-child(2) { animation-delay: 0.2s; }
     .eq-bar:nth-child(3) { animation-delay: 0.4s; }
     .eq-bar:nth-child(4) { animation-delay: 0.1s; }
@@ -119,42 +106,18 @@
       animation: eneDissolve 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
     @keyframes eneDissolve {
-      0% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-        filter: blur(0px);
-      }
-      45% {
-        opacity: 0.8;
-        transform: scale(1.02) skewX(3deg);
-        filter: drop-shadow(0 0 15px #00f0ff) blur(1px);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(0.9) translateY(-30px) skewX(-5deg);
-        filter: blur(10px) brightness(2);
-        max-height: 0;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        display: none;
-      }
+      0% { opacity: 1; transform: scale(1); filter: blur(0px); }
+      50% { opacity: 0.8; transform: scale(1.02) skewX(2deg); filter: drop-shadow(0 0 12px #00f0ff); }
+      100% { opacity: 0; transform: scale(0.9) translateY(-20px); filter: blur(10px); display: none; }
     }
 
-    /* Cyber Hologram Card Reveal */
     .ene-holo-pass {
-      animation: holoFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: holoFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       background: linear-gradient(135deg, rgba(8, 18, 38, 0.95), rgba(4, 9, 20, 0.98));
     }
     @keyframes holoFadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(25px) scale(0.96);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -170,10 +133,11 @@
     />
   </div>
 
+  <!-- Header -->
   <header class="bg-[#050c1b]/90 backdrop-blur-md border-b border-cyan-500/20 sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between relative">
       
-      <!-- Ene Cyber Terminal Header Logo -->
+      <!-- Left: Logo & Icon -->
       <div class="flex items-center space-x-3 cursor-pointer group z-10" onclick="switchView('voter')">
         <div class="relative w-11 h-11 rounded-full bg-[#040914] border-2 border-ene-cyan ene-icon-pulse overflow-hidden flex items-center justify-center p-1 group-hover:scale-105 transition-all">
           <img 
@@ -195,7 +159,7 @@
         </div>
       </div>
 
-      <!-- Center Logo: Mekakucity Actors (Small, Sleek, Centered) -->
+      <!-- Center Logo: Mekakucity Actors -->
       <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center pointer-events-none sm:pointer-events-auto">
         <div class="px-3 py-1 rounded-lg bg-[#040914]/80 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,240,255,0.2)] flex items-center justify-center">
           <img 
@@ -206,7 +170,7 @@
         </div>
       </div>
 
-      <!-- Action Navigation Buttons -->
+      <!-- Right: Action Buttons -->
       <div class="flex items-center space-x-2 z-10">
         <button id="navVoterBtn" onclick="switchView('voter')" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-black bg-ene-cyan hover:bg-cyan-300 shadow-md shadow-cyan-950 flex items-center gap-1.5">
           <i data-lucide="radio" class="w-4 h-4"></i>
@@ -245,7 +209,6 @@
                 <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
                 ONLINE // REAL-TIME NETWORK READY
               </span>
-              <!-- Audio Waveform Equalizer -->
               <div class="flex items-end gap-1 h-5 px-2 bg-black/40 rounded-md border border-cyan-900/50">
                 <span class="eq-bar w-1 bg-ene-cyan rounded-full"></span>
                 <span class="eq-bar w-1 bg-cyan-300 rounded-full"></span>
@@ -272,25 +235,13 @@
           <div class="mt-4 flex items-start gap-3 bg-[#030814]/70 border border-cyan-900/50 p-3.5 rounded-xl text-xs text-slate-300 font-mono">
             <i data-lucide="bot" class="w-5 h-5 text-ene-cyan flex-shrink-0 mt-0.5"></i>
             <span class="leading-relaxed">
-              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ ＼(≧▽≦)／ <span class="text-pink-400 font-semibold">เมื่อใครกดเลือกแล้ว คิวนั้นจะหายวับไปจากหน้าจอทุกคนทันทีแบบ Real-time เลยนะคะ!</span> และผลจะส่งตรงเข้าหลังบ้านแอดมินคนเดียวเท่านั้นค่ะ~ Enjoy o(≧▽≦)o"
+              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ ＼(≧▽≦)／ <span class="text-pink-400 font-semibold">เมื่อใครกดเลือกแล้ว คิวนั้นจะหายวับไปจากหน้าจอทุกคนทันที</span> คนต่อไปจะไม่เห็นคิวนั้นอีกค่ะ! และผลจะส่งตรงเข้าหลังบ้านแอดมินคนเดียวเท่านั้นค่ะ~ Enjoy o(≧▽≦)o"
             </span>
           </div>
         </div>
       </div>
 
-      <!-- Quick status bar -->
-      <div class="flex items-center justify-between bg-[#081226]/80 px-4 py-3 rounded-xl border border-cyan-900/40 text-xs">
-        <div class="text-slate-400 flex items-center gap-2 font-mono">
-          <i data-lucide="shield-check" class="w-4 h-4 text-ene-cyan"></i>
-          <span>PROTECTED RESULTS // ผลโหวตเห็นได้เฉพาะเอเนะเท่านั้นค่ะ ฮิ ๆ (─‿‿─)</span>
-        </div>
-        <button onclick="resetMyVotes()" class="text-ene-cyan hover:text-cyan-300 font-mono text-xs flex items-center gap-1.5 transition underline-offset-4 hover:underline">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-          [ทดสอบ: ล้างสถานะการเลือกของฉัน]
-        </button>
-      </div>
-
-      <!-- Container: Form or Holo Pass -->
+      <!-- Container: Form or Holo Pass (แถบ PROTECTED RESULTS ถูกตัดออกเรียบร้อยแล้ว) -->
       <div id="voterMainCardContainer">
         <!-- Rendered by JavaScript -->
       </div>
@@ -456,10 +407,10 @@
   </div>
 
   <script>
-    // --- 1. FIREBASE REALTIME SETUP ---
-    // นำ databaseURL จากโปรเจกต์ Firebase ของคุณมาใส่ตรงนี้
+    // --- 1. CLOUD REAL-TIME DATABASE ENGINE ---
+    // ใช้ Firebase Realtime Database แบบ Open Access ที่ทุกคนสามารถดึงข้อมูลสดข้ามเครื่องได้ทันที
     const firebaseConfig = {
-      databaseURL: "https://mekakucity-queue-default-rtdb.firebaseio.com"
+      databaseURL: "https://mekaku-cosplay-2570-default-rtdb.asia-southeast1.firebasedatabase.app"
     };
 
     let db = null;
@@ -470,10 +421,10 @@
       db = firebase.database();
       isFirebaseReady = true;
     } catch (e) {
-      console.warn("Firebase Running in Local Fallback mode:", e);
+      console.warn("Local storage fallback enabled:", e);
     }
 
-    // Mekakucity Actors Character presets
+    // Character Presets (No Ene, No Kuroha)
     const MEKAKU_CHARACTERS = [
       { id: 'Ayano', name: 'Ayano', number: 'No. 0' },
       { id: 'Kido', name: 'Kido', number: 'No. 1' },
@@ -486,7 +437,7 @@
       { id: 'Konoha', name: 'Konoha', number: 'No. 9' },
     ];
 
-    // The specified 9 solo photoshoot queues (Queue 2 to 10)
+    // The 9 solo photoshoot queues
     const TIME_SLOTS = [
       { id: 'q2', queueNumber: 2, time: '12.20 – 12.40 น.', label: 'คิวที่ 2' },
       { id: 'q3', queueNumber: 3, time: '12.40 – 13.00 น.', label: 'คิวที่ 3' },
@@ -504,10 +455,10 @@
     let selectedSlotId = null;
     let liveEntries = [];
 
-    // ดึงข้อมูลและดักฟัง Realtime จาก Firebase เมื่อมีคนจอง ทุกเครื่องจะตัดคิวนั้นทิ้งทันที
-    function initDatabaseListener() {
+    // ดักฟังการเปลี่ยนแปลงจาก Cloud แบบสดๆ ทุกเครื่องจะอัปเดตและตัดคิวทิ้งพร้อมกันทันที
+    function initRealtimeListener() {
       if (isFirebaseReady && db) {
-        db.ref('mekaku_votes').on('value', (snapshot) => {
+        db.ref('mekakucity_slots_booked').on('value', (snapshot) => {
           const val = snapshot.val();
           if (val) {
             liveEntries = Object.keys(val).map(key => ({
@@ -517,21 +468,16 @@
           } else {
             liveEntries = [];
           }
+          // บันทึกสำรองในเครื่อง
+          localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
           renderVoterView();
           if (isAdminLoggedIn) renderAdminView();
         });
       } else {
-        liveEntries = getStoredEntries();
+        // ดึงจาก LocalStorage สำรอง
+        const stored = localStorage.getItem('mekaku_ene_entries_v3');
+        liveEntries = stored ? JSON.parse(stored) : [];
         renderVoterView();
-      }
-    }
-
-    function getStoredEntries() {
-      try {
-        const data = localStorage.getItem('mekaku_ene_entries_v3');
-        return data ? JSON.parse(data) : [];
-      } catch (e) {
-        return [];
       }
     }
 
@@ -550,20 +496,14 @@
       } catch (e) {}
     }
 
-    function removeMySubmission() {
-      try {
-        localStorage.removeItem('mekaku_ene_my_vote_v3');
-      } catch (e) {}
-    }
-
-    // --- RENDER VOTER VIEW (ตัดคิวที่ถูกเลือกออกทันที) ---
+    // --- RENDER VOTER VIEW (คิวที่ถูกเลือกแล้วจะหายไป ไม่แสดงให้คนอื่นเห็น) ---
     function renderVoterView() {
       const container = document.getElementById('voterMainCardContainer');
       if (!container) return;
 
       const myRecord = getMySubmission();
 
-      // กรณีที่ 1: ตัวเองเลือกไปแล้ว -> แสดงตั๋ว Ene Pass
+      // กรณีตัวเองเลือกเสร็จแล้ว -> แสดง ENE Pass
       if (myRecord) {
         const slot = TIME_SLOTS.find(s => s.id === myRecord.slotId);
         container.innerHTML = `
@@ -618,7 +558,7 @@
             <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 font-mono">
               <div class="flex items-center gap-1.5 text-slate-300">
                 <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-                ตัวเลือกของนายท่าน เอเนะ Save เรียบร้อยค่ะ ! ขอบพระคุณที่ร่วมสนุกนะคะ! σ(≧ε≦σ) ♡ 
+                ตัวเลือกของนายท่าน เอเนะ Save เรียบร้อยค่ะ ! แคปหน้านี้เก็บไว้ได้เลยนะคะ! σ(≧ε≦σ) ♡ 
               </div>
               <span class="text-[11px] text-slate-500">
                 Timestamp: ${new Date(myRecord.timestamp).toLocaleTimeString('th-TH')} น.
@@ -630,7 +570,7 @@
         return;
       }
 
-      // กรณีที่ 2: ยังไม่ได้เลือก -> กรองเฉพาะคิวที่ "ยังไม่มีใครจอง" (คิวที่จองแล้วจะหายไปทันที)
+      // สำหรับคนที่ 2, 3, 4: ดึงเฉพาะคิวที่ "ยังไม่มีคนจอง" มาแสดง (คิวที่โดนจองแล้วจะหายไปทันที)
       const bookedSlotIds = liveEntries.map(e => e.slotId);
       const availableSlots = TIME_SLOTS.filter(s => !bookedSlotIds.includes(s.id));
 
@@ -771,14 +711,14 @@
       }
     }
 
-    // --- กดยืนยันโหวต (ส่งขึ้นคลาวด์สด ๆ เพื่อลบคิวออกจากหน้าจอทุกคน) ---
+    // --- กดยืนยันบันทึกคิว (ตัดคิวออกแบบ Realtime ทันที) ---
     function submitVoteAction() {
       if (!selectedSlotId) {
         showToast('กรุณาคลิกเลือกช่วงเวลาคิวถ่ายเดี่ยว', 'error');
         return;
       }
 
-      // เช็กสดอีกครั้งว่ามีคนตัดหน้าไปก่อนหรือไม่
+      // เช็กสดว่าคิวนี้ถูกเพื่อนคนอื่นกดตัดหน้าไปหรือยัง
       const isAlreadyTaken = liveEntries.some(e => e.slotId === selectedSlotId);
       if (isAlreadyTaken) {
         showToast('อุ๊ปส์! คิวนี้เพิ่งมีเพื่อนกดจองไปแล้วค่ะ กรุณาเลือกคิวอื่นนะคะ', 'error');
@@ -809,7 +749,7 @@
 
       const formWrapper = document.getElementById('votingFormWrapper');
 
-      // 1. Confetti Cyber Blue Burst
+      // Confetti
       try {
         confetti({
           particleCount: 65,
@@ -819,12 +759,11 @@
         });
       } catch (e) {}
 
-      // 2. Cyber Dissolve Animation
+      // Cyber Dissolve
       if (formWrapper) {
         formWrapper.classList.add('cyber-dissolve');
       }
 
-      // 3. บันทึกข้อมูลคิว
       const newEntry = {
         id: 'mekaku-' + Date.now(),
         slotId: selectedSlotId,
@@ -834,19 +773,16 @@
         timestamp: new Date().toISOString()
       };
 
+      // บันทึกขึ้น Cloud เพื่อให้คิวหายไปจากหน้าจอของทุกคน
       if (isFirebaseReady && db) {
-        // ส่งขึ้นฐานข้อมูลออนไลน์ (จะสั่งให้หน้าจอทุกคนลบคิวนี้ทิ้งทันที)
-        db.ref('mekaku_votes').push(newEntry);
+        db.ref('mekakucity_slots_booked').push(newEntry);
       } else {
-        const entries = getStoredEntries();
-        entries.push(newEntry);
-        localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(entries));
-        liveEntries = entries;
+        liveEntries.push(newEntry);
+        localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
       }
 
       saveMySubmission(newEntry);
 
-      // 4. Render holographic ticket
       setTimeout(() => {
         showToast('Ene: บันทึกข้อมูลคิวสำเร็จเรียบร้อยค่ะ!', 'success');
         renderVoterView();
@@ -866,7 +802,6 @@
       if (totalVotersEl) totalVotersEl.innerText = `${totalCount}`;
       if (entriesBadge) entriesBadge.innerText = `${totalCount} RECORDS`;
 
-      // 1. Render Slots Progress
       if (progressContainer) {
         progressContainer.innerHTML = TIME_SLOTS.map(slot => {
           const slotEntries = entries.filter(e => e.slotId === slot.id);
@@ -885,7 +820,6 @@
                 </div>
               </div>
 
-              <!-- Progress bar -->
               <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
                 <div class="bg-gradient-to-r from-cyan-600 to-ene-cyan h-2 rounded-full transition-all duration-500" style="width: ${count > 0 ? 100 : 0}%"></div>
               </div>
@@ -907,7 +841,6 @@
         }).join('');
       }
 
-      // 2. Render Entries Table
       if (tableBody) {
         if (entries.length === 0) {
           tableBody.innerHTML = `
@@ -1029,23 +962,14 @@
       switchView('voter');
     }
 
-    function resetMyVotes() {
-      removeMySubmission();
-      selectedSlotId = null;
-      renderVoterView();
-      showToast('รีเซ็ตสถานะแล้ว สามารถเลือกคิวทดสอบใหม่ได้', 'info');
-    }
-
     function deleteSingleEntry(keyOrId) {
       if (isFirebaseReady && db) {
-        db.ref(`mekaku_votes/${keyOrId}`).remove().then(() => {
+        db.ref(`mekakucity_slots_booked/${keyOrId}`).remove().then(() => {
           showToast('ลบรายการที่เลือกเรียบร้อยแล้ว', 'info');
         });
       } else {
-        let entries = getStoredEntries();
-        entries = entries.filter(e => e.id !== keyOrId);
-        localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(entries));
-        liveEntries = entries;
+        liveEntries = liveEntries.filter(e => e.id !== keyOrId);
+        localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
         renderAdminView();
         showToast('ลบรายการที่เลือกแล้ว', 'info');
       }
@@ -1055,13 +979,13 @@
       if (!confirm("ต้องการรีเซ็ตคิวทั้งหมดและเปิดให้จองใหม่ใช่หรือไม่?")) return;
 
       if (isFirebaseReady && db) {
-        db.ref('mekaku_votes').remove().then(() => {
-          removeMySubmission();
+        db.ref('mekakucity_slots_booked').remove().then(() => {
+          localStorage.removeItem('mekaku_ene_my_vote_v3');
           showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
         });
       } else {
         localStorage.removeItem('mekaku_ene_entries_v3');
-        removeMySubmission();
+        localStorage.removeItem('mekaku_ene_my_vote_v3');
         liveEntries = [];
         renderAdminView();
         showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
@@ -1138,7 +1062,7 @@
     // Initialize application on page load
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      initDatabaseListener();
+      initRealtimeListener();
     });
   </script>
 </body>
