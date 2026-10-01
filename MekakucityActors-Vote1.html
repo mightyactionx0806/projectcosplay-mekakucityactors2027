@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mekakucity Actors Solo Queue - Project Cosplay</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Orbitron, Prompt, Share Tech Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Prompt:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <!-- Lucide Icons (Audio/Tech/Cyber Icons only) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ene: {
+              cyan: '#00f0ff',
+              bright: '#38bdf8',
+              deep: '#0284c7',
+              darkbg: '#040914',
+              panel: '#081226',
+              border: '#0ea5e9',
+              accent: '#3b82f6'
+            }
+          },
+          fontFamily: {
+            prompt: ['Prompt', 'sans-serif'],
+            cyber: ['Orbitron', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #030712;
+      color: #e0f2fe;
+      overflow-x: hidden;
+    }
+
+    /* Ene Cyber Grid Background */
+    .ene-grid-bg {
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.12) 0%, transparent 60%),
+        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
+    }
+
+    /* Glowing Cyber Effects */
+    .glow-cyan {
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.28);
+    }
+    .text-glow-cyan {
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.75);
+    }
+
+    /* Ene Floating Bottom Character Animation */
+    .ene-floating-character {
+      animation: eneFloat 4s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 22px rgba(0, 240, 255, 0.55));
+    }
+    @keyframes eneFloat {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-16px) rotate(-1.5deg);
+      }
+    }
+
+    /* Error Icon Glitch Pulse */
+    .ene-icon-pulse {
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.6), inset 0 0 8px rgba(255, 0, 85, 0.4);
+      animation: borderPulse 2.4s ease-in-out infinite alternate;
+    }
+    @keyframes borderPulse {
+      0% {
+        border-color: #00f0ff;
+        box-shadow: 0 0 14px rgba(0, 240, 255, 0.65);
+      }
+      100% {
+        border-color: #ff0055;
+        box-shadow: 0 0 22px rgba(255, 0, 85, 0.85);
+      }
+    }
+
+    /* Cyber Equalizer Animation */
+    .eq-bar {
+      animation: bounceEqualizer 1.2s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(2) { animation-delay: 0.2s; }
+    .eq-bar:nth-child(3) { animation-delay: 0.4s; }
+    .eq-bar:nth-child(4) { animation-delay: 0.1s; }
+    .eq-bar:nth-child(5) { animation-delay: 0.35s; }
+
+    @keyframes bounceEqualizer {
+      0% { height: 4px; }
+      100% { height: 22px; }
+    }
+
+    /* Cyber Glitch Disappearance */
+    .cyber-dissolve {
+      animation: eneDissolve 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    @keyframes eneDissolve {
+      0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0px);
+      }
+      45% {
+        opacity: 0.8;
+        transform: scale(1.02) skewX(3deg);
+        filter: drop-shadow(0 0 15px #00f0ff) blur(1px);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.9) translateY(-30px) skewX(-5deg);
+        filter: blur(10px) brightness(2);
+        max-height: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        display: none;
+      }
+    }
+
+    /* Cyber Hologram Card Reveal */
+    .ene-holo-pass {
+      animation: holoFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      background: linear-gradient(135deg, rgba(8, 18, 38, 0.95), rgba(4, 9, 20, 0.98));
+    }
+    @keyframes holoFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(25px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body class="ene-grid-bg min-h-screen flex flex-col selection:bg-ene-cyan selection:text-black relative">
+
+  <!-- Floating Ene Character at Bottom-Left (Image 1: MCA_-_Ene_2.jpg with fallback support) -->
+  <div class="fixed bottom-0 left-0 z-10 pointer-events-none opacity-45 sm:opacity-80 lg:opacity-95 max-w-[200px] sm:max-w-[280px] md:max-w-[340px] select-none transition-all duration-300">
+    <img 
+      src="MCA_-_Ene_2.jpg" 
+      onerror="this.onerror=null; this.src='MCA_-_Ene.webp'; if(!this.src) this.src='MCA_-_Ene.jpg';" 
+      alt="Ene Cyber Character" 
+      class="ene-floating-character w-full h-auto object-contain transform origin-bottom-left"
+    />
+  </div>
+
+  <header class="bg-[#050c1b]/90 backdrop-blur-md border-b border-cyan-500/20 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between relative">
+      
+      <!-- Ene Cyber Terminal Header Logo (Image 2: Ene_Error.webp transparent icon) -->
+      <div class="flex items-center space-x-3 cursor-pointer group z-10" onclick="switchView('voter')">
+        <div class="relative w-11 h-11 rounded-full bg-[#040914] border-2 border-ene-cyan ene-icon-pulse overflow-hidden flex items-center justify-center p-1 group-hover:scale-105 transition-all">
+          <img 
+            src="Ene_Error.webp" 
+            onerror="this.onerror=null; this.src='Ene_Error.jpg';" 
+            alt="Ene Error Icon" 
+            class="w-full h-full object-contain"
+          />
+          <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-cyber font-bold tracking-wider text-ene-cyan text-sm sm:text-base text-glow-cyan">Mekakucity Actors</span>
+            <span class="text-[10px] font-mono tracking-wider uppercase px-2 py-0.5 bg-cyan-950/80 text-cyan-300 border border-cyan-700/50 rounded-md">!!ERROR!!</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-mono hidden sm:flex items-center gap-1.5">
+            <span>Project Cosplay : 24 April 2027</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Center Logo: Mekakucity Actors (Small, Sleek, Centered) -->
+      <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center pointer-events-none sm:pointer-events-auto">
+        <div class="px-3 py-1 rounded-lg bg-[#040914]/80 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,240,255,0.2)] flex items-center justify-center">
+          <img 
+            src="Mekakucity_Actors_Logo.webp" 
+            alt="Mekakucity Actors Logo" 
+            class="h-5 sm:h-6 md:h-7 w-auto object-contain filter invert contrast-200 brightness-150 drop-shadow-[0_0_8px_rgba(0,240,255,0.6)] transition-all duration-300"
+          />
+        </div>
+      </div>
+
+      <!-- Action Navigation Buttons -->
+      <div class="flex items-center space-x-2 z-10">
+        <button id="navVoterBtn" onclick="switchView('voter')" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-black bg-ene-cyan hover:bg-cyan-300 shadow-md shadow-cyan-950 flex items-center gap-1.5">
+          <i data-lucide="radio" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Queue</span>
+        </button>
+
+        <button id="navAdminBtn" onclick="handleAdminNavClick()" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-slate-300 hover:text-white bg-[#0a152d] hover:bg-[#112348] border border-cyan-500/30 flex items-center gap-1.5">
+          <i data-lucide="terminal" class="w-4 h-4 text-ene-cyan"></i>
+          <span id="adminBtnText" class="hidden sm:inline">Admin Ene</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 md:p-8">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+      <div class="bg-[#081226] text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-ene-cyan/60 glow-cyan">
+        <span id="toastIcon"><i data-lucide="info" class="w-5 h-5 text-ene-cyan"></i></span>
+        <span id="toastMessage" class="text-sm font-medium font-prompt">ข้อความระบบ</span>
+      </div>
+    </div>
+
+    <!-- Voter View Section -->
+    <section id="voterView" class="space-y-6">
+      
+      <!-- Ene Assistant Cyber Banner -->
+      <div class="relative overflow-hidden bg-gradient-to-br from-[#071329] via-[#050d1d] to-[#040814] border border-cyan-500/30 rounded-2xl p-6 sm:p-8 shadow-2xl">
+        <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-ene-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="relative z-10">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center gap-2 px-3 py-1 bg-cyan-950/80 border border-ene-cyan/40 rounded-full text-ene-cyan text-xs font-mono font-bold">
+                <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                ONLINE // AI ASSISTANT READY
+              </span>
+              <!-- Audio Waveform Equalizer -->
+              <div class="flex items-end gap-1 h-5 px-2 bg-black/40 rounded-md border border-cyan-900/50">
+                <span class="eq-bar w-1 bg-ene-cyan rounded-full"></span>
+                <span class="eq-bar w-1 bg-cyan-300 rounded-full"></span>
+                <span class="eq-bar w-1 bg-ene-cyan rounded-full"></span>
+                <span class="eq-bar w-1 bg-cyan-400 rounded-full"></span>
+                <span class="eq-bar w-1 bg-ene-cyan rounded-full"></span>
+              </div>
+            </div>
+
+            <span class="px-3 py-1 bg-slate-900 border border-slate-700 text-slate-300 rounded-full text-xs font-mono">
+              EVENT DATE: 24 April 2027
+            </span>
+          </div>
+
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-prompt tracking-tight leading-tight">
+            โหวตเลือกถ่ายเดี่ยว สำหรับโปรคอส <span class="text-ene-cyan text-glow-cyan">Mekakucity Actors</span>
+          </h1>
+
+          <p class="text-slate-300 mt-2 text-sm sm:text-base flex items-center gap-2 font-prompt">
+            <i data-lucide="calendar" class="w-4 h-4 text-ene-cyan"></i>
+            กำหนดวันไพร: <span class="text-white font-semibold">วันเสาร์ที่ 24 เมษายน 2570 ณ สะพานเขียว-สวนลุม เวลา 10.00 - 18.00 น.</span>
+          </p>
+
+          <div class="mt-4 flex items-start gap-3 bg-[#030814]/70 border border-cyan-900/50 p-3.5 rounded-xl text-xs text-slate-300 font-mono">
+            <i data-lucide="bot" class="w-5 h-5 text-ene-cyan flex-shrink-0 mt-0.5"></i>
+            <span class="leading-relaxed">
+              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ ＼(≧▽≦)／ เมื่อเลือกแล้วตัวเลือกจะหายไปทันทีหลังกด และผลจะส่งตรงเข้าหลังบ้านแอดมินคนเดียวเท่านั้นค่ะ~ ถ้าผลโหวตซ้ำเอเนะขออนุญาตให้สิทธิ์คนโหวตก่อนนะคะ นับจากเวลาส่งค่ะ! Enjoy o(≧▽≦)o"
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick status bar -->
+      <div class="flex items-center justify-between bg-[#081226]/80 px-4 py-3 rounded-xl border border-cyan-900/40 text-xs">
+        <div class="text-slate-400 flex items-center gap-2 font-mono">
+          <i data-lucide="shield-check" class="w-4 h-4 text-ene-cyan"></i>
+          <span>PROTECTED RESULTS // ผลโหวตเห็นได้เฉพาะเอเนะเท่านั้นค่ะ ฮิ ๆ (─‿‿─)</span>
+        </div>
+        <button onclick="resetMyVotes()" class="text-ene-cyan hover:text-cyan-300 font-mono text-xs flex items-center gap-1.5 transition underline-offset-4 hover:underline">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          [ทดสอบ: ล้างสถานะการเลือกของฉัน]
+        </button>
+      </div>
+
+      <!-- Container: Form or Holo Pass -->
+      <div id="voterMainCardContainer">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </section>
+
+    <section id="adminView" class="hidden space-y-6">
+      
+      <!-- Admin Cyber Banner -->
+      <div class="bg-gradient-to-r from-[#071329] via-[#091836] to-[#040914] text-white p-6 sm:p-7 rounded-2xl border border-cyan-500/40 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 bg-cyan-950/80 rounded-xl border border-ene-cyan/50 text-ene-cyan glow-cyan">
+              <i data-lucide="terminal" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold font-cyber tracking-wider text-white">ADMIN TERMINAL CONSOLE</h2>
+              <p class="text-xs text-ene-cyan font-mono mt-0.5">ระบบควบคุมและสรุปผลคิวถ่ายเดี่ยว Mekakucity Actors</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <button onclick="copySummaryToClipboard()" class="px-4 py-2 bg-ene-cyan hover:bg-cyan-300 text-black rounded-xl text-xs font-cyber font-bold transition flex items-center gap-1.5 shadow-md shadow-cyan-950">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            COPY TO LINE
+          </button>
+          <button onclick="adminLogout()" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 rounded-xl text-xs font-mono font-bold transition flex items-center gap-1.5">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            LOGOUT
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono">
+        <div class="bg-[#081226] p-5 rounded-xl border border-cyan-900/50 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-400 uppercase">TOTAL SLOTS</p>
+            <h3 class="text-2xl font-bold font-cyber text-ene-cyan mt-1">9 SLOTS</h3>
+            <span class="text-[11px] text-slate-500">คิวที่ 2 – 10 (20 นาที/คิว)</span>
+          </div>
+          <div class="p-3 bg-cyan-950 text-ene-cyan rounded-xl border border-cyan-800/40">
+            <i data-lucide="clock" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <div class="bg-[#081226] p-5 rounded-xl border border-cyan-900/50 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-400 uppercase">REGISTERED COSPLAYERS</p>
+            <h3 id="statTotalVoters" class="text-2xl font-bold font-cyber text-white mt-1">0</h3>
+            <span class="text-[11px] text-slate-500">จำนวนคนที่ลงทะเบียนแล้ว</span>
+          </div>
+          <div class="p-3 bg-cyan-950 text-ene-cyan rounded-xl border border-cyan-800/40">
+            <i data-lucide="users" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <div class="bg-[#081226] p-5 rounded-xl border border-cyan-900/50 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-400 uppercase">ACCESS PERMISSION</p>
+            <h3 class="text-sm font-bold text-emerald-400 mt-2 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              ENE.ROOT GRANTED
+            </h3>
+            <span class="text-[11px] text-slate-500">สิทธิ์ผู้ดูแลระบบสูงสุด</span>
+          </div>
+          <div class="p-3 bg-cyan-950 text-emerald-400 rounded-xl border border-cyan-800/40">
+            <i data-lucide="shield" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Time Slots Progress Breakdown -->
+      <div class="bg-[#081226] rounded-2xl border border-slate-800 p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold font-prompt text-white flex items-center gap-2">
+              <i data-lucide="activity" class="w-5 h-5 text-ene-cyan"></i>
+              สถิติการเลือกช่วงเวลา (Queue Allocation)
+            </h3>
+            <p class="text-xs text-slate-400 font-mono">เรียงตามลำดับคิวที่ 2 – 10</p>
+          </div>
+          <button onclick="resetAllSlotVotes()" class="text-xs text-rose-400 hover:text-rose-300 border border-rose-900/50 hover:bg-rose-950/30 px-3 py-1.5 rounded-lg transition font-mono flex items-center gap-1">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            RESET ALL
+          </button>
+        </div>
+
+        <div id="adminSlotsProgressList" class="space-y-3">
+          <!-- Rendered by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Registered Cosplayers Table -->
+      <div class="bg-[#081226] rounded-2xl border border-slate-800 p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-bold font-prompt text-white flex items-center gap-2">
+              <i data-lucide="table" class="w-5 h-5 text-ene-cyan"></i>
+              ตารางสรุปรายชื่อเลเยอร์และตัวละคร
+            </h3>
+            <p class="text-xs text-slate-400 font-mono">MASTER QUEUE TABLE</p>
+          </div>
+          <span id="entriesBadge" class="text-xs font-mono bg-black/60 px-3 py-1 rounded-full text-ene-cyan border border-cyan-800/50">0 RECORDS</span>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-800">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-[#040914] text-slate-400 font-mono border-b border-slate-800">
+              <tr>
+                <th class="py-3 px-4">#</th>
+                <th class="py-3 px-4">ชื่อเลเยอร์</th>
+                <th class="py-3 px-4">ตัวละคร</th>
+                <th class="py-3 px-4">คิว</th>
+                <th class="py-3 px-4">ช่วงเวลา</th>
+                <th class="py-3 px-4">เวลาลงทะเบียน</th>
+                <th class="py-3 px-4 text-center">ลบ</th>
+              </tr>
+            </thead>
+            <tbody id="adminEntriesTableBody" class="divide-y divide-slate-800/70 text-slate-200">
+              <!-- Rendered by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="loginModal" class="fixed inset-0 z-50 bg-[#02050c]/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-[#081226] rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-ene-cyan/60 glow-cyan">
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-cyan-950 text-ene-cyan flex items-center justify-center border border-cyan-700/60">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+          </div>
+          <h3 class="text-sm font-bold font-cyber text-white tracking-wider">ADMIN AUTHENTICATION</h3>
+        </div>
+        <button onclick="closeLoginModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-400 mb-4 leading-relaxed font-mono">
+        กรุณากรอกรหัสผ่านเพื่อเข้าสู่บ้านของเอเนะ (รหัสผ่านเริ่มต้น: <span class="bg-black text-ene-cyan px-1.5 py-0.5 rounded border border-cyan-800">admin123</span>)
+      </p>
+
+      <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-mono text-slate-300 mb-1">PASSWORD KEY</label>
+          <input type="password" id="adminPasswordInput" required placeholder="ป้อนรหัสผ่าน..." class="w-full px-3.5 py-2.5 rounded-lg bg-[#040914] border border-slate-700 focus:outline-none focus:border-ene-cyan text-sm text-white font-mono placeholder-slate-600">
+        </div>
+        <div id="loginErrorMsg" class="text-rose-400 text-xs hidden flex items-center gap-1.5 font-mono">
+          <i data-lucide="alert-triangle" class="w-4 h-4"></i> ACCESS DENIED: รหัสผ่านไม่ถูกต้อง
+        </div>
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeLoginModal()" class="px-4 py-2 text-xs font-mono text-slate-400 hover:text-white transition">CANCEL</button>
+          <button type="submit" class="px-5 py-2 bg-ene-cyan hover:bg-cyan-300 text-black rounded-lg text-xs font-cyber font-bold tracking-wider transition">VERIFY KEY</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Mekakucity Actors Character presets (Ene and Kuroha are excluded as requested)
+    const MEKAKU_CHARACTERS = [
+      { id: 'Ayano', name: 'Ayano', number: 'No. 0' },
+      { id: 'Kido', name: 'Kido', number: 'No. 1' },
+      { id: 'Seto', name: 'Seto', number: 'No. 2' },
+      { id: 'Kano', name: 'Kano', number: 'No. 3' },
+      { id: 'Marry', name: 'Marry', number: 'No. 4' },
+      { id: 'Momo', name: 'Momo', number: 'No. 5' },
+      { id: 'Shintaro', name: 'Hibiya', number: 'No. 7' },
+      { id: 'Hibiya', name: 'Hibiya', number: 'No. 8' },
+      { id: 'Konoha', name: 'Konoha', number: 'No. 9' },
+    ];
+
+    // The specified 9 solo photoshoot queues (Queue 2 to 10)
+    const TIME_SLOTS = [
+      { id: 'q2', queueNumber: 2, time: '12.20 – 12.40 น.', label: 'คิวที่ 2' },
+      { id: 'q3', queueNumber: 3, time: '12.40 – 13.00 น.', label: 'คิวที่ 3' },
+      { id: 'q4', queueNumber: 4, time: '13.00 – 13.20 น.', label: 'คิวที่ 4' },
+      { id: 'q5', queueNumber: 5, time: '13.20 – 13.40 น.', label: 'คิวที่ 5' },
+      { id: 'q6', queueNumber: 6, time: '13.40 – 14.00 น.', label: 'คิวที่ 6' },
+      { id: 'q7', queueNumber: 7, time: '14.00 – 14.20 น.', label: 'คิวที่ 7' },
+      { id: 'q8', queueNumber: 8, time: '14.20 – 14.40 น.', label: 'คิวที่ 8' },
+      { id: 'q9', queueNumber: 9, time: '14.40 – 15.00 น.', label: 'คิวที่ 9' },
+      { id: 'q10', queueNumber: 10, time: '15.00 – 15.20 น.', label: 'คิวที่ 10' }
+    ];
+
+    const ADMIN_PASS = 'Mm08061998';
+    let isAdminLoggedIn = false;
+    let selectedSlotId = null;
+
+    function getStoredEntries() {
+      try {
+        const data = localStorage.getItem('mekaku_ene_entries_v3');
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveEntries(entries) {
+      try {
+        localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(entries));
+      } catch (e) {}
+    }
+
+    function getMySubmission() {
+      try {
+        const data = localStorage.getItem('mekaku_ene_my_vote_v3');
+        return data ? JSON.parse(data) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function saveMySubmission(record) {
+      try {
+        localStorage.setItem('mekaku_ene_my_vote_v3', JSON.stringify(record));
+      } catch (e) {}
+    }
+
+    function removeMySubmission() {
+      try {
+        localStorage.removeItem('mekaku_ene_my_vote_v3');
+      } catch (e) {}
+    }
+
+    function renderVoterView() {
+      const container = document.getElementById('voterMainCardContainer');
+      if (!container) return;
+
+      const myRecord = getMySubmission();
+
+      // Case 1: Already Voted -> Show Cyber Holographic Access Pass
+      if (myRecord) {
+        const slot = TIME_SLOTS.find(s => s.id === myRecord.slotId);
+        container.innerHTML = `
+          <div class="ene-holo-pass border-2 border-ene-cyan/70 rounded-3xl p-6 sm:p-8 shadow-2xl glow-cyan text-left relative overflow-hidden">
+            <!-- Digital Ene Cyber Header Bar -->
+            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-ene-cyan via-blue-500 to-ene-cyan"></div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-cyan-900/60 pb-4 mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-14 h-14 rounded-full bg-[#040914] border-2 border-ene-cyan ene-icon-pulse overflow-hidden p-1 flex-shrink-0 flex items-center justify-center">
+                  <img src="Ene_Error.webp" onerror="this.onerror=null; this.src='Ene_Error.jpg';" alt="Ene Pass Icon" class="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <span class="text-[10px] font-mono text-ene-cyan tracking-widest uppercase">ENE SYSTEM // ACCESS GRANTED</span>
+                  <h3 class="text-xl sm:text-2xl font-bold font-prompt text-white">เอเนะบันทึกแล้วนะคะ!</h3>
+                </div>
+              </div>
+              <div class="px-3.5 py-1.5 bg-[#040914] border border-cyan-700/60 rounded-xl text-xs font-mono text-ene-cyan flex items-center gap-1.5">
+                <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                PASS: ENE-${Math.floor(1000 + Math.random() * 9000)}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#050c1b]/80 p-5 rounded-2xl border border-cyan-900/50 font-prompt">
+              <div>
+                <span class="text-xs text-slate-400 font-mono uppercase">ชื่อเล่น (NickName):</span>
+                <p class="text-lg font-bold text-white mt-0.5">${escapeHtml(myRecord.layerName)}</p>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 font-mono uppercase">ตัวละครที่คอส (Character):</span>
+                <p class="text-lg font-bold text-ene-cyan mt-0.5">${escapeHtml(myRecord.character)}</p>
+              </div>
+              <div class="md:col-span-2 pt-2 border-t border-cyan-950 flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <span class="text-xs text-slate-400 font-mono uppercase">ช่วงเวลาคิวเดี่ยว:</span>
+                  <p class="text-xl font-bold text-ene-cyan font-mono mt-0.5 text-glow-cyan">
+                    ${slot ? slot.time : '-'} <span class="text-white text-base font-prompt">(${slot ? slot.label : '-'})</span>
+                  </p>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-slate-400 font-mono uppercase">วันที่:</span>
+                  <p class="text-sm font-semibold text-slate-200">24 เมษายน 2570</p>
+                </div>
+              </div>
+
+              ${myRecord.notes ? `
+                <div class="md:col-span-2 text-xs bg-[#040814] p-3 rounded-xl border border-cyan-950 text-slate-300">
+                  <span class="text-ene-cyan font-mono">หมายเหตุ/พร็อพ:</span> ${escapeHtml(myRecord.notes)}
+                </div>
+              ` : ''}
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 font-mono">
+              <div class="flex items-center gap-1.5 text-slate-300">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                ตัวเลือกของนายท่าน เอเนะ Save เรียบร้อยค่ะ ! ขอบพระคุณที่ร่วมสนุกนะคะ! σ(≧ε≦σ) ♡ 
+              </div>
+              <span class="text-[11px] text-slate-500">
+                Timestamp: ${new Date(myRecord.timestamp).toLocaleTimeString('th-TH')} น.
+              </span>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      // Case 2: Not Voted -> Show Selection Form
+      container.innerHTML = `
+        <div id="votingFormWrapper" class="space-y-6">
+          
+          <!-- Step 1: Select Time Slot -->
+          <div class="bg-[#081226]/90 rounded-2xl border border-cyan-900/40 p-5 sm:p-7 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs font-mono font-bold text-ene-cyan tracking-wider uppercase">[ STEP 01: SELECT SLOT ]</span>
+                <h3 class="text-lg font-bold font-prompt text-white">เลือกช่วงเวลาคิวถ่ายเดี่ยว</h3>
+              </div>
+              <span class="text-xs text-slate-400 font-mono hidden sm:inline-block">DURATION: 20 MIN / SLOT</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="slotsGrid">
+              ${TIME_SLOTS.map(slot => `
+                <div 
+                  id="slot-btn-${slot.id}"
+                  onclick="selectSlot('${slot.id}')"
+                  class="cursor-pointer group relative p-4 rounded-xl border border-slate-800 bg-[#040914]/80 hover:bg-[#0c1833] hover:border-ene-cyan/80 transition-all duration-200 select-none">
+                  
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-cyan-950 text-ene-cyan border border-cyan-800/60 group-hover:bg-ene-cyan group-hover:text-black transition">
+                      ${slot.label}
+                    </span>
+                    <div id="check-icon-${slot.id}" class="w-5 h-5 rounded-full border border-slate-700 flex items-center justify-center transition group-hover:border-ene-cyan">
+                      <i data-lucide="check" class="w-3 h-3 text-ene-cyan opacity-0 transition-opacity"></i>
+                    </div>
+                  </div>
+
+                  <div class="mt-3">
+                    <div class="text-base font-bold font-mono text-white group-hover:text-ene-cyan transition">
+                      ${slot.time}
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-mono mt-0.5">
+                      20 นาทีต่อคิว
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Step 2: Cosplayer Information -->
+          <div class="bg-[#081226]/90 rounded-2xl border border-cyan-900/40 p-5 sm:p-7 shadow-xl space-y-4">
+            <div>
+              <span class="text-xs font-mono font-bold text-ene-cyan tracking-wider uppercase">[ STEP 02: COSPLAYER INFO ]</span>
+              <h3 class="text-lg font-bold font-prompt text-white">ข้อมูลเลเยอร์และตัวละคร</h3>
+            </div>
+
+            <!-- Quick Character Selector Badges (No Ene, No Kuroha) -->
+            <div>
+              <label class="block text-xs font-mono text-slate-300 mb-2">เลือกตัวละครด่วน (คลิกเลือกหรือพิมพ์เองได้):</label>
+              <div class="flex flex-wrap gap-1.5">
+                ${MEKAKU_CHARACTERS.map(c => `
+                  <button 
+                    type="button" 
+                    onclick="pickCharacterPreset('${c.name}')" 
+                    class="char-badge text-xs font-mono px-3 py-1 rounded-lg bg-[#040914] border border-cyan-900/60 text-slate-300 hover:border-ene-cyan hover:text-ene-cyan transition flex items-center gap-1.5">
+                    <span>${c.name}</span>
+                    <span class="text-[10px] text-slate-500 font-mono">${c.number}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div>
+                <label class="block text-xs font-mono text-slate-300 mb-1.5">ชื่อเลเยอร์ (Cosplayer Name) *</label>
+                <input 
+                  type="text" 
+                  id="voterLayerName" 
+                  required 
+                  placeholder="เช่น Ray, Mild, Rin" 
+                  class="w-full px-4 py-2.5 rounded-xl bg-[#040914] border border-slate-700 focus:outline-none focus:border-ene-cyan text-sm text-white placeholder-slate-600 font-prompt">
+              </div>
+
+              <div>
+                <label class="block text-xs font-mono text-slate-300 mb-1.5">ตัวละครที่คอสเพลย์ (Character) *</label>
+                <input 
+                  type="text" 
+                  id="voterCharName" 
+                  required 
+                  placeholder="เช่น Shintaro, Kano, Kido" 
+                  class="w-full px-4 py-2.5 rounded-xl bg-[#040914] border border-slate-700 focus:outline-none focus:border-ene-cyan text-sm text-white placeholder-slate-600 font-prompt">
+              </div>
+    
+            <!-- Submit action -->
+            <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
+                <i data-lucide="zap" class="w-4 h-4 text-ene-cyan"></i>
+                เมื่อกดเลือกแล้ว ตัวเลือกจะสลายหายไปทันที (Cyber Glitch)
+              </div>
+
+              <button 
+                onclick="submitVoteAction()" 
+                id="submitVoteBtn"
+                class="w-full sm:w-auto px-7 py-3 bg-ene-cyan hover:bg-cyan-300 text-black font-cyber font-bold tracking-wider uppercase rounded-xl shadow-lg glow-cyan text-sm flex items-center justify-center gap-2 active:scale-95 transition-all">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                <span>ยืนยันการเลือกคิว</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    function selectSlot(slotId) {
+      selectedSlotId = slotId;
+
+      TIME_SLOTS.forEach(slot => {
+        const btn = document.getElementById(`slot-btn-${slot.id}`);
+        const iconContainer = document.getElementById(`check-icon-${slot.id}`);
+        const iconCheck = iconContainer ? iconContainer.querySelector('i') : null;
+
+        if (slot.id === slotId) {
+          btn.classList.add('border-ene-cyan', 'bg-cyan-950/50', 'glow-cyan');
+          btn.classList.remove('border-slate-800', 'bg-[#040914]/80');
+          if (iconContainer) {
+            iconContainer.classList.add('bg-ene-cyan', 'border-ene-cyan');
+            iconContainer.classList.remove('border-slate-700');
+          }
+          if (iconCheck) {
+            iconCheck.classList.remove('opacity-0', 'text-ene-cyan');
+            iconCheck.classList.add('opacity-100', 'text-black');
+          }
+        } else {
+          btn.classList.remove('border-ene-cyan', 'bg-cyan-950/50', 'glow-cyan');
+          btn.classList.add('border-slate-800', 'bg-[#040914]/80');
+          if (iconContainer) {
+            iconContainer.classList.remove('bg-ene-cyan', 'border-ene-cyan');
+            iconContainer.classList.add('border-slate-700');
+          }
+          if (iconCheck) {
+            iconCheck.classList.add('opacity-0');
+            iconCheck.classList.remove('opacity-100', 'text-black');
+            iconCheck.classList.add('text-ene-cyan');
+          }
+        }
+      });
+    }
+
+    function pickCharacterPreset(name) {
+      const charInput = document.getElementById('voterCharName');
+      if (charInput) {
+        charInput.value = name;
+        showToast(`เลือกตัวละคร: ${name}`, 'info');
+      }
+    }
+
+    function submitVoteAction() {
+      if (!selectedSlotId) {
+        showToast('กรุณาคลิกเลือกช่วงเวลาคิวถ่ายเดี่ยว', 'error');
+        return;
+      }
+
+      const layerInput = document.getElementById('voterLayerName');
+      const charInput = document.getElementById('voterCharName');
+      const notesInput = document.getElementById('voterNotes');
+
+      const layerName = layerInput ? layerInput.value.trim() : '';
+      const character = charInput ? charInput.value.trim() : '';
+      const notes = notesInput ? notesInput.value.trim() : '';
+
+      if (!layerName) {
+        showToast('กรุณากรอกชื่อเลเยอร์ของคุณ', 'error');
+        if (layerInput) layerInput.focus();
+        return;
+      }
+
+      if (!character) {
+        showToast('กรุณากรอกตัวละครที่คอสเพลย์', 'error');
+        if (charInput) charInput.focus();
+        return;
+      }
+
+      const formWrapper = document.getElementById('votingFormWrapper');
+
+      // 1. Confetti Cyber Blue Burst
+      try {
+        confetti({
+          particleCount: 65,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#00f0ff', '#38bdf8', '#ffffff', '#0284c7']
+        });
+      } catch (e) {}
+
+      // 2. Play cyber dissolve animation
+      if (formWrapper) {
+        formWrapper.classList.add('cyber-dissolve');
+      }
+
+      // 3. Save entry to persistent storage
+      const newEntry = {
+        id: 'mekaku-' + Date.now(),
+        slotId: selectedSlotId,
+        layerName: layerName,
+        character: character,
+        notes: notes,
+        timestamp: new Date().toISOString()
+      };
+
+      const entries = getStoredEntries();
+      entries.push(newEntry);
+      saveEntries(entries);
+      saveMySubmission(newEntry);
+
+      // 4. Render holographic ticket once disappearance animation completes
+      setTimeout(() => {
+        showToast('Ene: บันทึกข้อมูลคิวสำเร็จเรียบร้อยค่ะ!', 'success');
+        renderVoterView();
+      }, 480);
+    }
+
+    function renderAdminView() {
+      const progressContainer = document.getElementById('adminSlotsProgressList');
+      const tableBody = document.getElementById('adminEntriesTableBody');
+      const totalVotersEl = document.getElementById('statTotalVoters');
+      const entriesBadge = document.getElementById('entriesBadge');
+
+      const entries = getStoredEntries();
+      const totalCount = entries.length;
+
+      if (totalVotersEl) totalVotersEl.innerText = `${totalCount}`;
+      if (entriesBadge) entriesBadge.innerText = `${totalCount} RECORDS`;
+
+      // 1. Render Slots Progress
+      if (progressContainer) {
+        progressContainer.innerHTML = TIME_SLOTS.map(slot => {
+          const slotEntries = entries.filter(e => e.slotId === slot.id);
+          const count = slotEntries.length;
+          const percentage = totalCount > 0 ? ((count / totalCount) * 100).toFixed(0) : 0;
+
+          return `
+            <div class="bg-[#040914] p-3.5 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-cyan-950 text-ene-cyan border border-cyan-800/60 font-mono text-xs">${slot.label}</span>
+                  <span class="text-white font-mono">${slot.time}</span>
+                </div>
+                <div class="font-mono text-slate-300 text-xs">
+                  <span class="text-ene-cyan font-bold text-sm">${count}</span> คน (${percentage}%)
+                </div>
+              </div>
+
+              <!-- Progress bar -->
+              <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
+                <div class="bg-gradient-to-r from-cyan-600 to-ene-cyan h-2 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+              </div>
+
+              ${count > 0 ? `
+                <div class="mt-2 text-xs flex flex-wrap gap-1.5 items-center">
+                  <span class="text-slate-500 font-mono">เลเยอร์:</span>
+                  ${slotEntries.map(e => `
+                    <span class="bg-[#0b1730] px-2 py-0.5 rounded text-slate-200 border border-cyan-900 font-prompt">
+                      ${escapeHtml(e.layerName)} <span class="text-ene-cyan">(${escapeHtml(e.character)})</span>
+                    </span>
+                  `).join('')}
+                </div>
+              ` : `
+                <div class="mt-1 text-[11px] text-slate-600 font-mono italic">ยังว่าง ไม่มีผู้เลือกลงคิวนี้</div>
+              `}
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 2. Render Entries Table
+      if (tableBody) {
+        if (entries.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="8" class="py-8 text-center text-slate-500 text-xs font-mono">
+                NO QUEUE DATA FOUND // ยังไม่มีข้อมูลการลงทะเบียน
+              </td>
+            </tr>
+          `;
+        } else {
+          tableBody.innerHTML = entries.map((entry, index) => {
+            const slot = TIME_SLOTS.find(s => s.id === entry.slotId);
+            const timeStr = new Date(entry.timestamp).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+
+            return `
+              <tr class="hover:bg-slate-800/30 transition font-prompt">
+                <td class="py-3 px-4 font-mono text-slate-400">${index + 1}</td>
+                <td class="py-3 px-4 font-bold text-white">${escapeHtml(entry.layerName)}</td>
+                <td class="py-3 px-4">
+                  <span class="px-2 py-0.5 rounded bg-cyan-950 text-ene-cyan border border-cyan-800 text-xs font-mono font-semibold">
+                    ${escapeHtml(entry.character)}
+                  </span>
+                </td>
+                <td class="py-3 px-4 font-mono text-xs text-ene-cyan">${slot ? slot.label : '-'}</td>
+                <td class="py-3 px-4 font-mono text-xs text-slate-300">${slot ? slot.time : '-'}</td>
+                <td class="py-3 px-4 text-xs text-slate-400">${entry.notes ? escapeHtml(entry.notes) : '-'}</td>
+                <td class="py-3 px-4 font-mono text-xs text-slate-400">${timeStr} น.</td>
+                <td class="py-3 px-4 text-center">
+                  <button onclick="deleteSingleEntry('${entry.id}')" title="ลบรายการนี้" class="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 rounded transition">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
+
+      lucide.createIcons();
+    }
+
+    function switchView(view) {
+      const voterView = document.getElementById('voterView');
+      const adminView = document.getElementById('adminView');
+      const navVoterBtn = document.getElementById('navVoterBtn');
+      const navAdminBtn = document.getElementById('navAdminBtn');
+      const adminBtnText = document.getElementById('adminBtnText');
+
+      if (view === 'admin') {
+        if (!isAdminLoggedIn) {
+          openLoginModal();
+          return;
+        }
+        voterView.classList.add('hidden');
+        adminView.classList.remove('hidden');
+
+        navAdminBtn.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-bold tracking-wider transition-all text-black bg-ene-cyan glow-cyan flex items-center gap-1.5";
+        navVoterBtn.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-slate-300 hover:text-white bg-[#081226] hover:bg-[#112348] border border-cyan-500/30 flex items-center gap-1.5";
+        adminBtnText.innerText = "Admin Ene";
+
+        renderAdminView();
+      } else {
+        adminView.classList.add('hidden');
+        voterView.classList.remove('hidden');
+
+        navVoterBtn.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-bold tracking-wider transition-all text-black bg-ene-cyan shadow-md shadow-cyan-950 flex items-center gap-1.5";
+        navAdminBtn.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-slate-300 hover:text-white bg-[#081226] hover:bg-[#112348] border border-cyan-500/30 flex items-center gap-1.5";
+        adminBtnText.innerText = isAdminLoggedIn ? "CONSOLE แอดมิน" : "เฉพาะแอดมิน";
+
+        renderVoterView();
+      }
+    }
+
+    function handleAdminNavClick() {
+      if (isAdminLoggedIn) {
+        switchView('admin');
+      } else {
+        openLoginModal();
+      }
+    }
+
+    function openLoginModal() {
+      const modal = document.getElementById('loginModal');
+      const input = document.getElementById('adminPasswordInput');
+      const err = document.getElementById('loginErrorMsg');
+      if (err) err.classList.add('hidden');
+      if (input) input.value = '';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (input) input.focus();
+    }
+
+    function closeLoginModal() {
+      const modal = document.getElementById('loginModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function handleLoginSubmit(event) {
+      event.preventDefault();
+      const input = document.getElementById('adminPasswordInput');
+      const err = document.getElementById('loginErrorMsg');
+
+      if (input.value === ADMIN_PASS) {
+        isAdminLoggedIn = true;
+        closeLoginModal();
+        showToast('Ene: ยืนยันรหัสผ่านแอดมินสำเร็จ!', 'success');
+        switchView('admin');
+      } else {
+        if (err) err.classList.remove('hidden');
+        input.classList.add('border-rose-500');
+        input.select();
+      }
+    }
+
+    function adminLogout() {
+      isAdminLoggedIn = false;
+      showToast('ออกจากระบบแอดมินแล้ว', 'info');
+      switchView('voter');
+    }
+
+    function resetMyVotes() {
+      removeMySubmission();
+      selectedSlotId = null;
+      renderVoterView();
+      showToast('รีเซ็ตสถานะแล้ว สามารถเลือกคิวทดสอบใหม่ได้', 'info');
+    }
+
+    function deleteSingleEntry(entryId) {
+      let entries = getStoredEntries();
+      entries = entries.filter(e => e.id !== entryId);
+      saveEntries(entries);
+      showToast('ลบรายการที่เลือกแล้ว', 'info');
+      renderAdminView();
+    }
+
+    function resetAllSlotVotes() {
+      if (getStoredEntries().length === 0) {
+        showToast('ยังไม่มีข้อมูลให้ล้าง', 'info');
+        return;
+      }
+      saveEntries([]);
+      removeMySubmission();
+      showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
+      renderAdminView();
+    }
+
+    function copySummaryToClipboard() {
+      const entries = getStoredEntries();
+      let text = `📸 ตารางสรุปคิวถ่ายเดี่ยว - โปรคอส Mekakucity Actors\n`;
+      text += `📅 วันพฤหัสบดีที่ 24 เมษายน 2570\n`;
+      text += `==============================================\n`;
+
+      TIME_SLOTS.forEach(slot => {
+        const slotEntries = entries.filter(e => e.slotId === slot.id);
+        if (slotEntries.length > 0) {
+          const detail = slotEntries.map(e => `${e.layerName} (${e.character})`).join(', ');
+          text += `▶ ${slot.time} [${slot.label}] : ${detail}\n`;
+        } else {
+          text += `▷ ${slot.time} [${slot.label}] : (ว่าง)\n`;
+        }
+      });
+
+      text += `==============================================\n`;
+      text += `ยอดลงทะเบียนทั้งหมด: ${entries.length} คน`;
+
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('คัดลอกสรุปตารางคิวสำหรับส่ง LINE เรียบร้อยแล้ว!', 'success');
+      } catch (err) {
+        showToast('ไม่สามารถคัดลอกข้อมูลได้', 'error');
+      }
+      document.body.removeChild(tempArea);
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+
+      let iconHtml = '<i data-lucide="info" class="w-5 h-5 text-ene-cyan"></i>';
+      if (type === 'success') {
+        iconHtml = '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>';
+      } else if (type === 'error') {
+        iconHtml = '<i data-lucide="alert-triangle" class="w-5 h-5 text-rose-400"></i>';
+      }
+
+      toastIcon.innerHTML = iconHtml;
+      toastMsg.innerText = message;
+      lucide.createIcons();
+
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3200);
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Initialize application on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderVoterView();
+    });
+  </script>
+</body>
+</html>
