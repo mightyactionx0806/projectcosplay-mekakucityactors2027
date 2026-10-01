@@ -93,15 +93,6 @@
       100% { height: 22px; }
     }
 
-    .cyber-dissolve {
-      animation: eneDissolve 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    }
-    @keyframes eneDissolve {
-      0% { opacity: 1; transform: scale(1); filter: blur(0px); }
-      50% { opacity: 0.8; transform: scale(1.02) skewX(2deg); filter: drop-shadow(0 0 12px #00f0ff); }
-      100% { opacity: 0; transform: scale(0.9) translateY(-20px); filter: blur(10px); display: none; }
-    }
-
     .ene-holo-pass {
       animation: holoFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       background: linear-gradient(135deg, rgba(8, 18, 38, 0.95), rgba(4, 9, 20, 0.98));
@@ -114,7 +105,7 @@
 </head>
 <body class="ene-grid-bg min-h-screen flex flex-col selection:bg-ene-cyan selection:text-black relative">
 
-  <!-- Floating Ene Character at Bottom-Left -->
+  <!-- รูปที่ 1: มุมซ้ายล่าง Ene ลอยเรืองแสง -->
   <div class="fixed bottom-0 left-0 z-10 pointer-events-none opacity-45 sm:opacity-80 lg:opacity-95 max-w-[200px] sm:max-w-[280px] md:max-w-[340px] select-none transition-all duration-300">
     <img 
       src="MCA_-_Ene_2.jpg" 
@@ -124,11 +115,11 @@
     />
   </div>
 
-  <!-- Header -->
+  <!-- แถบ Header เมนูด้านบน -->
   <header class="bg-[#050c1b]/90 backdrop-blur-md border-b border-cyan-500/20 sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between relative">
       
-      <!-- Left: Logo & Icon -->
+      <!-- ซ้าย: ไอคอน Ene Error -->
       <div class="flex items-center space-x-3 cursor-pointer group z-10" onclick="switchView('voter')">
         <div class="relative w-11 h-11 rounded-full bg-[#040914] border-2 border-ene-cyan ene-icon-pulse overflow-hidden flex items-center justify-center p-1 group-hover:scale-105 transition-all">
           <img 
@@ -150,7 +141,7 @@
         </div>
       </div>
 
-      <!-- Center Logo: Mekakucity Actors -->
+      <!-- กลาง: โลโก้ Mekakucity Actors แบบโปร่งใส -->
       <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center pointer-events-none sm:pointer-events-auto">
         <div class="px-3 py-1 rounded-lg bg-[#040914]/80 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,240,255,0.2)] flex items-center justify-center">
           <img 
@@ -161,7 +152,7 @@
         </div>
       </div>
 
-      <!-- Right: Action Buttons -->
+      <!-- ขวา: เมนูแอดมิน -->
       <div class="flex items-center space-x-2 z-10">
         <button id="navVoterBtn" onclick="switchView('voter')" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-black bg-ene-cyan hover:bg-cyan-300 shadow-md shadow-cyan-950 flex items-center gap-1.5">
           <i data-lucide="radio" class="w-4 h-4"></i>
@@ -178,7 +169,7 @@
 
   <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 md:p-8">
 
-    <!-- Toast Notification -->
+    <!-- การแจ้งเตือน Toast -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
       <div class="bg-[#081226] text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-ene-cyan/60 glow-cyan">
         <span id="toastIcon"><i data-lucide="info" class="w-5 h-5 text-ene-cyan"></i></span>
@@ -186,10 +177,10 @@
       </div>
     </div>
 
-    <!-- Voter View Section -->
+    <!-- ส่วน Voter View (แสดงคิวทันทีตั้งแต่เข้าเว็บ) -->
     <section id="voterView" class="space-y-6">
       
-      <!-- Ene Assistant Cyber Banner -->
+      <!-- แบนเนอร์ Ene -->
       <div class="relative overflow-hidden bg-gradient-to-br from-[#071329] via-[#050d1d] to-[#040814] border border-cyan-500/30 rounded-2xl p-6 sm:p-8 shadow-2xl">
         <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-ene-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
         
@@ -198,7 +189,7 @@
             <div class="flex items-center gap-2">
               <span class="inline-flex items-center gap-2 px-3 py-1 bg-cyan-950/80 border border-ene-cyan/40 rounded-full text-ene-cyan text-xs font-mono font-bold">
                 <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
-                ONLINE // LIVE SYNC ACTIVE
+                SYSTEM READY
               </span>
               <div class="flex items-end gap-1 h-5 px-2 bg-black/40 rounded-md border border-cyan-900/50">
                 <span class="eq-bar w-1 bg-ene-cyan rounded-full"></span>
@@ -226,22 +217,21 @@
           <div class="mt-4 flex items-start gap-3 bg-[#030814]/70 border border-cyan-900/50 p-3.5 rounded-xl text-xs text-slate-300 font-mono">
             <i data-lucide="bot" class="w-5 h-5 text-ene-cyan flex-shrink-0 mt-0.5"></i>
             <span class="leading-relaxed">
-              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ ＼(≧▽≦)／ <span class="text-pink-400 font-semibold">คิวไหนที่ถูกจองไปแล้วจะถูกตัดทิ้งทันที คนต่อไปจะไม่เห็นคิวนั้นแน่นอนค่ะ!</span>"
+              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ! <span class="text-pink-400 font-semibold">คิวไหนที่ถูกจองไปแล้วจะถูกตัดออกทันที คนต่อไปจะไม่เห็นคิวนั้นแน่นอนค่ะ!</span>"
             </span>
           </div>
         </div>
       </div>
 
-      <!-- Container: Form or Holo Pass (เปิดหน้าเว็บปุ๊บ คิวที่ยังว่างอยู่จะแสดงทันที) -->
+      <!-- ฟอร์มเลือกคิว (ขึ้นโชว์ทันที) -->
       <div id="voterMainCardContainer">
         <!-- Rendered by JavaScript -->
       </div>
     </section>
 
-    <!-- Admin View Section -->
+    <!-- ส่วน Admin View -->
     <section id="adminView" class="hidden space-y-6">
       
-      <!-- Admin Cyber Banner -->
       <div class="bg-gradient-to-r from-[#071329] via-[#091836] to-[#040914] text-white p-6 sm:p-7 rounded-2xl border border-cyan-500/40 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div class="flex items-center gap-3">
@@ -250,7 +240,7 @@
             </div>
             <div>
               <h2 class="text-xl font-bold font-cyber tracking-wider text-white">ADMIN TERMINAL CONSOLE</h2>
-              <p class="text-xs text-ene-cyan font-mono mt-0.5">ระบบควบคุมและสรุปผลคิวถ่ายเดี่ยว Mekakucity Actors (LIVE DATABASE)</p>
+              <p class="text-xs text-ene-cyan font-mono mt-0.5">ระบบควบคุมและสรุปผลคิวถ่ายเดี่ยว Mekakucity Actors</p>
             </div>
           </div>
         </div>
@@ -266,7 +256,7 @@
         </div>
       </div>
 
-      <!-- Stats Cards -->
+      <!-- สรุปสถิติ -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono">
         <div class="bg-[#081226] p-5 rounded-xl border border-cyan-900/50 flex items-center justify-between">
           <div>
@@ -305,7 +295,7 @@
         </div>
       </div>
 
-      <!-- Time Slots Progress Breakdown -->
+      <!-- สถิติการเลือกช่วงเวลา -->
       <div class="bg-[#081226] rounded-2xl border border-slate-800 p-6 space-y-4">
         <div class="flex items-center justify-between border-b border-slate-800 pb-4">
           <div>
@@ -326,7 +316,7 @@
         </div>
       </div>
 
-      <!-- Registered Cosplayers Table -->
+      <!-- ตารางรายชื่อเลเยอร์ -->
       <div class="bg-[#081226] rounded-2xl border border-slate-800 p-6 space-y-4">
         <div class="flex items-center justify-between">
           <div>
@@ -362,7 +352,7 @@
     </section>
   </main>
 
-  <!-- Login Modal -->
+  <!-- Login Modal แอดมิน -->
   <div id="loginModal" class="fixed inset-0 z-50 bg-[#02050c]/85 backdrop-blur-md hidden items-center justify-center p-4">
     <div class="bg-[#081226] rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-ene-cyan/60 glow-cyan">
       <div class="flex justify-between items-center mb-4">
@@ -378,7 +368,7 @@
       </div>
 
       <p class="text-xs text-slate-400 mb-4 leading-relaxed font-mono">
-        กรุณากรอกรหัสผ่านเพื่อเข้าสู่บ้านของเอเนะ
+        กรุณากรอกรหัสผ่านเพื่อเข้าสู่หลังบ้านของเอเนะ
       </p>
 
       <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
@@ -398,11 +388,7 @@
   </div>
 
   <script>
-    // --- 1. SHARED CLOUD STORAGE API (ใช้งานได้จริงทันทีโดยไม่ต้องตั้งค่าใดๆ) ---
-    const STORAGE_KEY = 'mekaku_queue_cosplay_2570';
-    const API_ENDPOINT = `https://api.counterapi.dev/v1/mekakucity_cosplay/`; // หรือใช้ Key-Value Server
-
-    // Mekakucity Characters (No Ene, No Kuroha)
+    // ตัวเลือกตัวละครด่วน (ไม่มี Kuroha และ Ene)
     const MEKAKU_CHARACTERS = [
       { id: 'Ayano', name: 'Ayano', number: 'No. 0' },
       { id: 'Kido', name: 'Kido', number: 'No. 1' },
@@ -415,7 +401,7 @@
       { id: 'Konoha', name: 'Konoha', number: 'No. 9' },
     ];
 
-    // The 9 solo photoshoot queues
+    // รายการคิวทั้ง 9 คิว
     const TIME_SLOTS = [
       { id: 'q2', queueNumber: 2, time: '12.20 – 12.40 น.', label: 'คิวที่ 2' },
       { id: 'q3', queueNumber: 3, time: '12.40 – 13.00 น.', label: 'คิวที่ 3' },
@@ -431,43 +417,37 @@
     const ADMIN_PASS = 'Mm08061998';
     let isAdminLoggedIn = false;
     let selectedSlotId = null;
-    let liveEntries = [];
 
-    // ดึงข้อมูลสดจาก Server กลาง (Cloud Sync)
-    async function fetchServerEntries() {
+    // ระบบ Broadcast Channel ซิงค์ข้ามแท็บ/หน้าต่างแบบ Real-time ทันที
+    let syncChannel;
+    try {
+      syncChannel = new BroadcastChannel('mekakucity_queue_sync');
+      syncChannel.onmessage = () => {
+        renderVoterView();
+        if (isAdminLoggedIn) renderAdminView();
+      };
+    } catch (e) {}
+
+    // ฟังก์ชันดึงรายการคิวที่จองไปแล้ว
+    function getStoredEntries() {
       try {
-        // ใช้ JSONStorage API สาธารณะสำหรับแชร์ข้อมูลข้ามเครื่อง
-        const res = await fetch(`https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/${STORAGE_KEY}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data)) {
-            liveEntries = data;
-            localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
-          }
-        }
+        const data = localStorage.getItem('mekaku_ene_booked_entries_v4');
+        return data ? JSON.parse(data) : [];
       } catch (e) {
-        // Fallback local
-        const stored = localStorage.getItem('mekaku_ene_entries_v3');
-        if (stored) liveEntries = JSON.parse(stored);
+        return [];
       }
-      renderVoterView();
-      if (isAdminLoggedIn) renderAdminView();
     }
 
-    // บันทึกข้อมูลขึ้น Server กลาง
-    async function pushServerEntries(entries) {
+    function saveStoredEntries(entries) {
       try {
-        await fetch(`https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/${STORAGE_KEY}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(entries)
-        });
+        localStorage.setItem('mekaku_ene_booked_entries_v4', JSON.stringify(entries));
+        if (syncChannel) syncChannel.postMessage('update');
       } catch (e) {}
     }
 
     function getMySubmission() {
       try {
-        const data = localStorage.getItem('mekaku_ene_my_vote_v3');
+        const data = sessionStorage.getItem('mekaku_ene_my_current_vote');
         return data ? JSON.parse(data) : null;
       } catch (e) {
         return null;
@@ -476,18 +456,18 @@
 
     function saveMySubmission(record) {
       try {
-        localStorage.setItem('mekaku_ene_my_vote_v3', JSON.stringify(record));
+        sessionStorage.setItem('mekaku_ene_my_current_vote', JSON.stringify(record));
       } catch (e) {}
     }
 
-    // --- RENDER VOTER VIEW (ตัดคิวที่ถูกจองแล้วทิ้งทันที) ---
+    // ฟังก์ชันวาดหน้าจอโหวต (ตัดคิวที่ถูกจองแล้วทิ้งทันที)
     function renderVoterView() {
       const container = document.getElementById('voterMainCardContainer');
       if (!container) return;
 
       const myRecord = getMySubmission();
 
-      // กรณีที่ 1: ตัวเองเลือกไปแล้ว -> แสดงตั๋ว
+      // ถ้าคนนี้เพิ่งกดยืนยันคิวเสร็จ -> โชว์ตั๋ว Ene Pass
       if (myRecord) {
         const slot = TIME_SLOTS.find(s => s.id === myRecord.slotId);
         container.innerHTML = `
@@ -542,11 +522,11 @@
             <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 font-mono">
               <div class="flex items-center gap-1.5 text-slate-300">
                 <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-                ตัวเลือกของนายท่าน เอเนะ Save เรียบร้อยค่ะ ! แคปหน้านี้เก็บไว้ได้เลยนะคะ! σ(≧ε≦σ) ♡ 
+                ตัวเลือกของนายท่าน บันทึกเรียบร้อยค่ะ! แคปหน้าจอนี้เก็บไว้ได้เลยนะคะ!
               </div>
-              <span class="text-[11px] text-slate-500">
-                Timestamp: ${new Date(myRecord.timestamp).toLocaleTimeString('th-TH')} น.
-              </span>
+              <button onclick="clearMySubmissionForTesting()" class="text-xs text-ene-cyan hover:underline font-mono">
+                [ทดสอบ: เลือกคิวอื่นเพิ่ม]
+              </button>
             </div>
           </div>
         `;
@@ -554,28 +534,30 @@
         return;
       }
 
-      // กรณีที่ 2: คนอื่นเข้ามา -> กรองเอาเฉพาะคิวที่ "ยังไม่มีคนจอง"
-      // คิวที่ถูกเลือกไปแล้ว (เช่น คิว 5, คิว 4) จะถูกกรองทิ้งและไม่เอามาสร้างใน HTML เด็ดขาด!
-      const bookedSlotIds = liveEntries.map(e => e.slotId);
+      // ดึงคิวที่จองไปแล้ว
+      const bookedEntries = getStoredEntries();
+      const bookedSlotIds = bookedEntries.map(e => e.slotId);
+
+      // กรองเอาเฉพาะคิวที่ "ยังไม่มีคนจอง"
       const availableSlots = TIME_SLOTS.filter(s => !bookedSlotIds.includes(s.id));
 
       container.innerHTML = `
         <div id="votingFormWrapper" class="space-y-6">
           
-          <!-- Step 1: Select Time Slot (โชว์เฉพาะคิวที่ยังว่างอยู่) -->
+          <!-- Step 1: แสดงคิวที่ยังว่างอยู่ (คิวที่จองแล้วจะหายไป) -->
           <div class="bg-[#081226]/90 rounded-2xl border border-cyan-900/40 p-5 sm:p-7 shadow-xl">
             <div class="flex items-center justify-between mb-4">
               <div>
                 <span class="text-xs font-mono font-bold text-ene-cyan tracking-wider uppercase">[ STEP 01: SELECT SLOT ]</span>
                 <h3 class="text-lg font-bold font-prompt text-white">เลือกช่วงเวลาคิวถ่ายเดี่ยว</h3>
               </div>
-              <span class="text-xs font-mono text-cyan-300 font-bold">เหลือว่าง ${availableSlots.length} / ${TIME_SLOTS.length} คิว</span>
+              <span class="text-xs font-mono text-cyan-300 font-bold">ว่าง ${availableSlots.length} / ${TIME_SLOTS.length} คิว</span>
             </div>
 
             ${availableSlots.length === 0 ? `
               <div class="p-8 text-center bg-cyan-950/30 border border-cyan-500/30 rounded-xl">
-                <p class="font-bold text-rose-400 font-prompt text-base">คิวถ่ายเดี่ยวถูกจองเต็มทุกช่วงเวลาแล้วค่ะ!</p>
-                <p class="text-xs text-slate-400 font-mono mt-1">โปรดติดต่อแอดมินหรือตากล้องประจำโปรเจกต์นะคะ</p>
+                <p class="font-bold text-rose-400 font-prompt text-base">คิวถ่ายเดี่ยวเต็มทุกช่วงเวลาแล้วค่ะ!</p>
+                <p class="text-xs text-slate-400 font-mono mt-1">โปรดติดต่อแอดมินประจำโปรเจกต์นะคะ</p>
               </div>
             ` : `
               <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="slotsGrid">
@@ -583,14 +565,14 @@
                   <div 
                     id="slot-btn-${slot.id}"
                     onclick="selectSlot('${slot.id}')"
-                    class="cursor-pointer group relative p-4 rounded-xl border ${selectedSlotId === slot.id ? 'border-ene-cyan bg-cyan-950/50 glow-cyan' : 'border-slate-800 bg-[#040914]/80'} hover:bg-[#0c1833] hover:border-ene-cyan/80 transition-all duration-200 select-none">
+                    class="cursor-pointer group relative p-4 rounded-xl border ${selectedSlotId === slot.id ? 'border-ene-cyan bg-cyan-950/60 glow-cyan' : 'border-slate-800 bg-[#040914]/80'} hover:bg-[#0c1833] hover:border-ene-cyan/80 transition-all select-none">
                     
                     <div class="flex items-center justify-between">
                       <span class="text-xs font-mono font-bold px-2 py-0.5 rounded ${selectedSlotId === slot.id ? 'bg-ene-cyan text-black' : 'bg-cyan-950 text-ene-cyan'} border border-cyan-800/60 transition">
                         ${slot.label}
                       </span>
-                      <div id="check-icon-${slot.id}" class="w-5 h-5 rounded-full border ${selectedSlotId === slot.id ? 'bg-ene-cyan border-ene-cyan' : 'border-slate-700'} flex items-center justify-center transition">
-                        <i data-lucide="check" class="w-3 h-3 ${selectedSlotId === slot.id ? 'opacity-100 text-black' : 'opacity-0 text-ene-cyan'} transition-opacity"></i>
+                      <div class="w-5 h-5 rounded-full border ${selectedSlotId === slot.id ? 'bg-ene-cyan border-ene-cyan' : 'border-slate-700'} flex items-center justify-center transition">
+                        <i data-lucide="check" class="w-3 h-3 ${selectedSlotId === slot.id ? 'opacity-100 text-black' : 'opacity-0 text-ene-cyan'}"></i>
                       </div>
                     </div>
 
@@ -608,7 +590,7 @@
             `}
           </div>
 
-          <!-- Step 2: Cosplayer Information -->
+          <!-- Step 2: กรอกชื่อและตัวละคร -->
           <div class="bg-[#081226]/90 rounded-2xl border border-cyan-900/40 p-5 sm:p-7 shadow-xl space-y-4">
             <div>
               <span class="text-xs font-mono font-bold text-ene-cyan tracking-wider uppercase">[ STEP 02: COSPLAYER INFO ]</span>
@@ -622,7 +604,7 @@
                   <button 
                     type="button" 
                     onclick="pickCharacterPreset('${c.name}')" 
-                    class="char-badge text-xs font-mono px-3 py-1 rounded-lg bg-[#040914] border border-cyan-900/60 text-slate-300 hover:border-ene-cyan hover:text-ene-cyan transition flex items-center gap-1.5">
+                    class="text-xs font-mono px-3 py-1 rounded-lg bg-[#040914] border border-cyan-900/60 text-slate-300 hover:border-ene-cyan hover:text-ene-cyan transition flex items-center gap-1.5">
                     <span>${c.name}</span>
                     <span class="text-[10px] text-slate-500 font-mono">${c.number}</span>
                   </button>
@@ -661,7 +643,6 @@
               </div>
             </div>
 
-            <!-- Submit action -->
             <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div class="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
                 <i data-lucide="zap" class="w-4 h-4 text-ene-cyan"></i>
@@ -669,6 +650,7 @@
               </div>
 
               <button 
+                type="button"
                 onclick="submitVoteAction()" 
                 id="submitVoteBtn"
                 class="w-full sm:w-auto px-7 py-3 bg-ene-cyan hover:bg-cyan-300 text-black font-cyber font-bold tracking-wider uppercase rounded-xl shadow-lg glow-cyan text-sm flex items-center justify-center gap-2 active:scale-95 transition-all">
@@ -695,18 +677,23 @@
       }
     }
 
-    // --- กดยืนยันโหวต ---
-    async function submitVoteAction() {
+    function clearMySubmissionForTesting() {
+      sessionStorage.removeItem('mekaku_ene_my_current_vote');
+      selectedSlotId = null;
+      renderVoterView();
+    }
+
+    // กดยืนยันการจองคิว
+    function submitVoteAction() {
       if (!selectedSlotId) {
         showToast('กรุณาคลิกเลือกช่วงเวลาคิวถ่ายเดี่ยว', 'error');
         return;
       }
 
-      // ดึงเช็กสดอีกรอบก่อนส่ง
-      await fetchServerEntries();
-      const isAlreadyTaken = liveEntries.some(e => e.slotId === selectedSlotId);
-      if (isAlreadyTaken) {
-        showToast('อุ๊ปส์! คิวนี้เพิ่งมีเพื่อนกดจองไปแล้วค่ะ กรุณาเลือกคิวอื่นนะคะ', 'error');
+      // เช็กสดว่าคิวนี้ถูกจองไปแล้วหรือยัง
+      const currentBooked = getStoredEntries();
+      if (currentBooked.some(e => e.slotId === selectedSlotId)) {
+        showToast('อุ๊ปส์! คิวนี้เพิ่งถูกจองไปแล้วค่ะ กรุณาเลือกคิวอื่นนะคะ', 'error');
         selectedSlotId = null;
         renderVoterView();
         return;
@@ -732,12 +719,6 @@
         return;
       }
 
-      const submitBtn = document.getElementById('submitVoteBtn');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>กำลังบันทึก...</span>';
-      }
-
       const newEntry = {
         id: 'mekaku-' + Date.now(),
         slotId: selectedSlotId,
@@ -747,12 +728,12 @@
         timestamp: new Date().toISOString()
       };
 
-      liveEntries.push(newEntry);
-      localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
-      saveMySubmission(newEntry);
+      // บันทึกคิวลงระบบ
+      currentBooked.push(newEntry);
+      saveStoredEntries(currentBooked);
 
-      // ส่งขึ้น Cloud Server
-      await pushServerEntries(liveEntries);
+      // บันทึกตั๋วของตัวเอง
+      saveMySubmission(newEntry);
 
       try {
         confetti({
@@ -764,17 +745,18 @@
       } catch (e) {}
 
       showToast('Ene: บันทึกข้อมูลคิวสำเร็จเรียบร้อยค่ะ!', 'success');
+      selectedSlotId = null;
       renderVoterView();
     }
 
-    // --- ADMIN SYSTEM ---
+    // ส่วนหน้าแอดมิน
     function renderAdminView() {
       const progressContainer = document.getElementById('adminSlotsProgressList');
       const tableBody = document.getElementById('adminEntriesTableBody');
       const totalVotersEl = document.getElementById('statTotalVoters');
       const entriesBadge = document.getElementById('entriesBadge');
 
-      const entries = liveEntries;
+      const entries = getStoredEntries();
       const totalCount = entries.length;
 
       if (totalVotersEl) totalVotersEl.innerText = `${totalCount}`;
@@ -940,27 +922,25 @@
       switchView('voter');
     }
 
-    async function deleteSingleEntry(id) {
-      liveEntries = liveEntries.filter(e => e.id !== id);
-      localStorage.setItem('mekaku_ene_entries_v3', JSON.stringify(liveEntries));
-      await pushServerEntries(liveEntries);
+    function deleteSingleEntry(id) {
+      let entries = getStoredEntries();
+      entries = entries.filter(e => e.id !== id);
+      saveStoredEntries(entries);
       renderAdminView();
       showToast('ลบรายการที่เลือกแล้ว', 'info');
     }
 
-    async function resetAllSlotVotes() {
+    function resetAllSlotVotes() {
       if (!confirm("ต้องการรีเซ็ตคิวทั้งหมดและเปิดให้จองใหม่ใช่หรือไม่?")) return;
 
-      liveEntries = [];
-      localStorage.removeItem('mekaku_ene_entries_v3');
-      localStorage.removeItem('mekaku_ene_my_vote_v3');
-      await pushServerEntries([]);
+      saveStoredEntries([]);
+      sessionStorage.removeItem('mekaku_ene_my_current_vote');
       renderAdminView();
       showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
     }
 
     function copySummaryToClipboard() {
-      const entries = liveEntries;
+      const entries = getStoredEntries();
       let text = `📸 ตารางสรุปคิวถ่ายเดี่ยว - โปรคอส Mekakucity Actors\n`;
       text += `📅 วันเสาร์ที่ 24 เมษายน 2570\n`;
       text += `==============================================\n`;
@@ -1026,11 +1006,10 @@
         .replace(/'/g, "&#039;");
     }
 
-    // โหลดหน้าเว็บแล้วดึงข้อมูลคิวสดทันที และคอยซิงค์ทุก 2 วินาที
+    // ทำงานทันทีเมื่อโหลดหน้าเว็บ
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      fetchServerEntries();
-      setInterval(fetchServerEntries, 2000); // Auto Sync ทุก 2 วินาทีเพื่อให้คิวที่คนอื่นเพิ่งกดหายไปทันที
+      renderVoterView();
     });
   </script>
 </body>
