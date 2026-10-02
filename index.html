@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ene Cyber Terminal - Mekakucity Actors Solo Queue</title>
+  <title>Mekakucity Actors - Project Cosplay 2027</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -132,7 +132,7 @@
 
         <button id="navAdminBtn" onclick="handleAdminNavClick()" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-slate-300 hover:text-white bg-[#0a152d] hover:bg-[#112348] border border-cyan-500/30 flex items-center gap-1.5">
           <i data-lucide="terminal" class="w-4 h-4 text-ene-cyan"></i>
-          <span id="adminBtnText" class="hidden sm:inline">เฉพาะแอดมิน</span>
+          <span id="adminBtnText" class="hidden sm:inline">เฉพาะเอเนะ</span>
         </button>
       </div>
     </div>
@@ -188,13 +188,13 @@
 
           <p class="text-slate-300 mt-2 text-sm sm:text-base flex items-center gap-2 font-prompt">
             <i data-lucide="calendar" class="w-4 h-4 text-ene-cyan"></i>
-            กำหนดการถ่ายทำ: <span class="text-white font-semibold">วันพฤหัสบดีที่ 24 เมษายน 2570</span>
+            วันไพร: <span class="text-white font-semibold">วันเสาร์ที่ 24 เมษายน 2570 เวลา 10.00 - 18.00 น.</span>
           </p>
 
           <div class="mt-4 flex items-start gap-3 bg-[#030814]/70 border border-cyan-900/50 p-3.5 rounded-xl text-xs text-slate-300 font-mono">
             <i data-lucide="bot" class="w-5 h-5 text-ene-cyan flex-shrink-0 mt-0.5"></i>
             <span class="leading-relaxed">
-              <strong class="text-ene-cyan font-bold">Ene:</strong> "เลือกคิวที่ต้องการแล้วกดยืนยันได้เลย ตัวเลือกจะหายไปทันทีและแอดมินจะเป็นคนเดียวที่ดูผลสรุปได้ค่ะ!"
+              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านเลือกคิวที่ต้องการแล้วกดยืนยันได้เลยค่ะ เมื่อเลือกแล้วตัวเลือกจะหายไปวับไปกับตาเลยค่ะ!"
             </span>
           </div>
         </div>
@@ -204,11 +204,11 @@
       <div class="flex items-center justify-between bg-[#081226]/80 px-4 py-3 rounded-xl border border-cyan-900/40 text-xs">
         <div class="text-slate-400 flex items-center gap-2 font-mono">
           <i data-lucide="shield-check" class="w-4 h-4 text-ene-cyan"></i>
-          <span>PROTECTED RESULTS // ผลโหวตเห็นได้เฉพาะแอดมิน</span>
+          <span>PROTECTED RESULTS // ผลโหวตเห็นได้เฉพาะเอเนะ</span>
         </div>
         <button onclick="resetMyVotes()" class="text-ene-cyan hover:text-cyan-300 font-mono text-xs flex items-center gap-1.5 transition underline-offset-4 hover:underline">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-          [ทดสอบ: ล้างสถานะการเลือกของฉัน]
+          [ระบบ: ล้างสถานะการเลือกของนายท่าน]
         </button>
       </div>
 
@@ -310,7 +310,7 @@
           <div>
             <h3 class="text-lg font-bold font-prompt text-white flex items-center gap-2">
               <i data-lucide="table" class="w-5 h-5 text-ene-cyan"></i>
-              ตารางสรุปรายชื่อเลเยอร์และตัวละคร
+              ตารางสรุปรายชื่อเล่นของนายท่านและตัวละคร
             </h3>
             <p class="text-xs text-slate-400 font-mono">MASTER QUEUE TABLE</p>
           </div>
@@ -322,11 +322,10 @@
             <thead class="bg-[#040914] text-slate-400 font-mono border-b border-slate-800">
               <tr>
                 <th class="py-3 px-4">#</th>
-                <th class="py-3 px-4">ชื่อเลเยอร์</th>
+                <th class="py-3 px-4">ชื่อเล่นของนายท่าน</th>
                 <th class="py-3 px-4">ตัวละคร</th>
                 <th class="py-3 px-4">คิว</th>
                 <th class="py-3 px-4">ช่วงเวลา</th>
-                <th class="py-3 px-4">พร็อพ/หมายเหตุ</th>
                 <th class="py-3 px-4">เวลาลงทะเบียน</th>
                 <th class="py-3 px-4 text-center">ลบ</th>
               </tr>
@@ -356,7 +355,7 @@
       </div>
 
       <p class="text-xs text-slate-400 mb-4 leading-relaxed font-mono">
-        กรุณากรอกรหัสผ่านเพื่อเข้าสู่คอนโซลแอดมิน (รหัสผ่าน: <span class="bg-black text-ene-cyan px-1.5 py-0.5 rounded border border-cyan-800">admin123</span>)
+        กรุณากรอกรหัสผ่านเพื่อเข้าสู่หลังบ้านของเอเนะ (รหัสผ่าน: <span class="bg-black text-ene-cyan px-1.5 py-0.5 rounded border border-cyan-800">admin123</span>)
       </p>
 
       <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
@@ -378,15 +377,15 @@
   <script>
     // Character presets (Without Ene & Without Kuroha)
     const MEKAKU_CHARACTERS = [
-      { id: 'shintaro', name: 'Shintaro', number: 'No. 7' },
-      { id: 'kido', name: 'Kido', number: 'No. 1' },
+      { id: 'Ayano', name: 'Ayano', number: 'No. 0' },
+      { id: 'Kido', name: 'Kido', number: 'No. 1' },
       { id: 'seto', name: 'Seto', number: 'No. 2' },
       { id: 'kano', name: 'Kano', number: 'No. 3' },
       { id: 'marry', name: 'Marry', number: 'No. 4' },
-      { id: 'momo', name: 'Momo', number: 'No. 5' },
-      { id: 'hibiya', name: 'Hibiya', number: 'No. 8' },
-      { id: 'konoha', name: 'Konoha', number: 'No. 9' },
-      { id: 'ayano', name: 'Ayano', number: 'No. 0' },
+      { id: 'Momo', name: 'Momo', number: 'No. 5' },
+      { id: 'Shintaro', name: 'Shintaro', number: 'No. 7' },
+      { id: 'Hibiya', name: 'Hibiya', number: 'No. 8' },
+      { id: 'Konoha', name: 'Konoha', number: 'No. 9' },
     ];
 
     // All 9 Queues (Queue 2 to 10)
@@ -402,7 +401,7 @@
       { id: 'q10', queueNumber: 10, time: '15.00 – 15.20 น.', label: 'คิวที่ 10' }
     ];
 
-    const ADMIN_PASS = 'admin123';
+    const ADMIN_PASS = 'Mm08061998';
     let isAdminLoggedIn = false;
     let selectedSlotId = null;
 
@@ -491,7 +490,7 @@
                 </div>
                 <div>
                   <span class="text-[10px] font-mono text-ene-cyan tracking-widest uppercase">ENE SYSTEM // ACCESS GRANTED</span>
-                  <h3 class="text-xl sm:text-2xl font-bold font-prompt text-white">บันทึกคิวถ่ายเดี่ยวของคุณเรียบร้อยแล้ว!</h3>
+                  <h3 class="text-xl sm:text-2xl font-bold font-prompt text-white">เอเนะบันทึกข้อมูลของนายท่านเรียบร้อยแล้วนะคะ!</h3>
                 </div>
               </div>
               <div class="px-3.5 py-1.5 bg-[#040914] border border-cyan-700/60 rounded-xl text-xs font-mono text-ene-cyan flex items-center gap-1.5">
@@ -502,7 +501,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#050c1b]/80 p-5 rounded-2xl border border-cyan-900/50 font-prompt">
               <div>
-                <span class="text-xs text-slate-400 font-mono uppercase">ชื่อเลเยอร์ (Cosplayer Name):</span>
+                <span class="text-xs text-slate-400 font-mono uppercase">ชื่อเล่นนายท่าน (Cosplayer Name):</span>
                 <p class="text-lg font-bold text-white mt-0.5">${escapeHtml(myRecord.layerName)}</p>
               </div>
               <div>
@@ -522,17 +521,10 @@
                 </div>
               </div>
 
-              ${myRecord.notes ? `
-                <div class="md:col-span-2 text-xs bg-[#040814] p-3 rounded-xl border border-cyan-950 text-slate-300">
-                  <span class="text-ene-cyan font-mono">หมายเหตุ/พร็อพ:</span> ${escapeHtml(myRecord.notes)}
-                </div>
-              ` : ''}
-            </div>
-
             <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 font-mono">
               <div class="flex items-center gap-1.5 text-slate-300">
                 <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-                ตัวเลือกของคุณถูกซ่อนจากหน้านี้ทันทีตามที่ตั้งค่าไว้
+                ตัวเลือกของนายท่านถูกเก็บพับไว้ในระบบของเอเนะแล้วค่ะ!
               </div>
               <span class="text-[11px] text-slate-500">
                 Timestamp: ${new Date(myRecord.timestamp).toLocaleTimeString('th-TH')} น.
@@ -553,7 +545,7 @@
             <div class="flex items-center justify-between mb-4">
               <div>
                 <span class="text-xs font-mono font-bold text-ene-cyan tracking-wider uppercase">[ STEP 01: SELECT SLOT ]</span>
-                <h3 class="text-lg font-bold font-prompt text-white">เลือกช่วงเวลาคิวถ่ายเดี่ยว (1 ช่วงเวลา)</h3>
+                <h3 class="text-lg font-bold font-prompt text-white">เลือกช่วงเวลาคิวถ่ายเดี่ยว</h3>
               </div>
               <span class="text-xs text-slate-400 font-mono hidden sm:inline-block">20 MIN / SLOT</span>
             </div>
@@ -630,16 +622,6 @@
                   placeholder="เช่น Shintaro, Kano, Kido" 
                   class="w-full px-4 py-2.5 rounded-xl bg-[#040914] border border-slate-700 focus:outline-none focus:border-ene-cyan text-sm text-white placeholder-slate-600 font-prompt">
               </div>
-
-              <div class="sm:col-span-2">
-                <label class="block text-xs font-mono text-slate-300 mb-1.5">พร็อพที่เตรียมมา / หมายเหตุเพิ่มเติม (ถ้ามี)</label>
-                <input 
-                  type="text" 
-                  id="voterNotes" 
-                  placeholder="เช่น มีพรอพร่ม/เก้าอี้, สะดวกสลับคิวถ้าถ่ายเสร็จไว" 
-                  class="w-full px-4 py-2.5 rounded-xl bg-[#040914] border border-slate-700 focus:outline-none focus:border-ene-cyan text-sm text-white placeholder-slate-600 font-prompt">
-              </div>
-            </div>
 
             <!-- Submit Button (INSTANT ZERO DELAY) -->
             <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -961,7 +943,7 @@
     function copySummaryToClipboard() {
       const entries = getStoredEntries();
       let text = `📸 ตารางสรุปคิวถ่ายเดี่ยว - โปรคอส Mekakucity Actors\n`;
-      text += `📅 วันพฤหัสบดีที่ 24 เมษายน 2570\n`;
+      text += `📅 วันเสาร์ที่ 24 เมษายน 2570\n`;
       text += `==============================================\n`;
 
       TIME_SLOTS.forEach(slot => {
