@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mekakucity Actors Solo Queue - Project Cosplay</title>
+  <title>Ene Cyber Terminal - Mekakucity Actors Solo Queue</title>
   
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Orbitron, Prompt, Share Tech Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Prompt:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
   <script>
     tailwind.config = {
@@ -48,6 +46,7 @@
       color: #e0f2fe;
       overflow-x: hidden;
     }
+
     .ene-grid-bg {
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.12) 0%, transparent 60%),
@@ -55,96 +54,85 @@
         linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
       background-size: 100% 100%, 36px 36px, 36px 36px;
     }
-    .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.28); }
-    .text-glow-cyan { text-shadow: 0 0 12px rgba(0, 240, 255, 0.75); }
+
+    .glow-cyan {
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.28);
+    }
+    .text-glow-cyan {
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.75);
+    }
+
+    /* Ene Character Gentle Floating */
     .ene-floating-character {
       animation: eneFloat 4s ease-in-out infinite alternate;
-      filter: drop-shadow(0 0 22px rgba(0, 240, 255, 0.55));
+      filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.45));
     }
     @keyframes eneFloat {
-      0% { transform: translateY(0px) rotate(0deg); }
-      100% { transform: translateY(-16px) rotate(-1.5deg); }
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-12px); }
     }
-    .ene-icon-pulse {
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.6), inset 0 0 8px rgba(255, 0, 85, 0.4);
-      animation: borderPulse 2.4s ease-in-out infinite alternate;
+
+    /* Equalizer Sound Waves */
+    .eq-bar {
+      animation: bounceEqualizer 1.2s ease-in-out infinite alternate;
     }
-    @keyframes borderPulse {
-      0% { border-color: #00f0ff; box-shadow: 0 0 14px rgba(0, 240, 255, 0.65); }
-      100% { border-color: #ff0055; box-shadow: 0 0 22px rgba(255, 0, 85, 0.85); }
-    }
-    .eq-bar { animation: bounceEqualizer 1.2s ease-in-out infinite alternate; }
     .eq-bar:nth-child(2) { animation-delay: 0.2s; }
     .eq-bar:nth-child(3) { animation-delay: 0.4s; }
     .eq-bar:nth-child(4) { animation-delay: 0.1s; }
     .eq-bar:nth-child(5) { animation-delay: 0.35s; }
-    @keyframes bounceEqualizer { 0% { height: 4px; } 100% { height: 22px; } }
-    .ene-holo-pass {
-      animation: holoFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      background: linear-gradient(135deg, rgba(8, 18, 38, 0.95), rgba(4, 9, 20, 0.98));
+
+    @keyframes bounceEqualizer {
+      0% { height: 4px; }
+      100% { height: 20px; }
     }
-    @keyframes holoFadeIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body class="ene-grid-bg min-h-screen flex flex-col selection:bg-ene-cyan selection:text-black relative">
 
-  <!-- รูปที่ 1: มุมซ้ายล่าง Ene ลอยเรืองแสง[cite: 3] -->
-  <div class="fixed bottom-0 left-0 z-10 pointer-events-none opacity-45 sm:opacity-80 lg:opacity-95 max-w-[200px] sm:max-w-[280px] md:max-w-[340px] select-none transition-all duration-300">
+  <!-- Floating Ene Character at Bottom-Left (Uses MCA_-_Ene.webp with .jpg fallback) -->
+  <div class="fixed bottom-0 left-0 z-10 pointer-events-none opacity-40 sm:opacity-75 lg:opacity-90 max-w-[190px] sm:max-w-[260px] md:max-w-[320px] select-none">
     <img 
-      src="MCA_-_Ene_2.jpg" 
-      onerror="this.onerror=null; this.src='MCA_-_Ene.webp'; if(!this.src) this.src='MCA_-_Ene.jpg';" 
+      src="MCA_-_Ene.webp" 
+      onerror="this.onerror=null; this.src='MCA_-_Ene.jpg';" 
       alt="Ene Cyber Character" 
       class="ene-floating-character w-full h-auto object-contain transform origin-bottom-left"
     />
   </div>
 
-  <!-- Header -->
   <header class="bg-[#050c1b]/90 backdrop-blur-md border-b border-cyan-500/20 sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between relative">
       
-      <!-- ซ้าย: ไอคอน Ene Error[cite: 4] -->
+      <!-- Ene Cyber Terminal Header Logo (Uses Ene_Error.webp with .jpg fallback) -->
       <div class="flex items-center space-x-3 cursor-pointer group z-10" onclick="switchView('voter')">
-        <div class="relative w-11 h-11 rounded-full bg-[#040914] border-2 border-ene-cyan ene-icon-pulse overflow-hidden flex items-center justify-center p-1 group-hover:scale-105 transition-all">
+        <div class="relative w-11 h-11 rounded-full bg-[#040914] border-2 border-ene-cyan overflow-hidden flex items-center justify-center p-1 shadow-[0_0_15px_rgba(0,240,255,0.6)]">
           <img 
             src="Ene_Error.webp" 
             onerror="this.onerror=null; this.src='Ene_Error.jpg';" 
             alt="Ene Error Icon" 
             class="w-full h-full object-contain"
           />
-          <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="font-cyber font-bold tracking-wider text-ene-cyan text-sm sm:text-base text-glow-cyan">Mekakucity Actors</span>
+            <span class="font-cyber font-bold tracking-wider text-ene-cyan text-sm sm:text-base text-glow-cyan">ENE.SYS</span>
             <span class="text-[10px] font-mono tracking-wider uppercase px-2 py-0.5 bg-cyan-950/80 text-cyan-300 border border-cyan-700/50 rounded-md">!!ONLINE!!</span>
           </div>
           <p class="text-[11px] text-slate-400 font-mono hidden sm:flex items-center gap-1.5">
-            <span>Project Cosplay : 24 April 2027</span>
+            <span>SOLO QUEUE TERMINAL</span>
           </p>
         </div>
       </div>
 
-      <!-- กลาง: โลโก้ Mekakucity Actors[cite: 5] -->
-      <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center pointer-events-none sm:pointer-events-auto">
-        <div class="px-3 py-1 rounded-lg bg-[#040914]/80 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,240,255,0.2)] flex items-center justify-center">
-          <img 
-            src="Mekakucity_Actors_Logo.webp" 
-            alt="Mekakucity Actors Logo" 
-            class="h-5 sm:h-6 md:h-7 w-auto object-contain filter invert contrast-200 brightness-150 drop-shadow-[0_0_8px_rgba(0,240,255,0.6)] transition-all duration-300"
-          />
-        </div>
-      </div>
-
-      <!-- ขวา: เมนูแอดมิน[cite: 7] -->
+      <!-- Action Navigation Buttons -->
       <div class="flex items-center space-x-2 z-10">
         <button id="navVoterBtn" onclick="switchView('voter')" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-black bg-ene-cyan hover:bg-cyan-300 shadow-md shadow-cyan-950 flex items-center gap-1.5">
           <i data-lucide="radio" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Queue</span>
+          <span class="hidden sm:inline">หน้าเลือกคิว</span>
         </button>
 
         <button id="navAdminBtn" onclick="handleAdminNavClick()" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-slate-300 hover:text-white bg-[#0a152d] hover:bg-[#112348] border border-cyan-500/30 flex items-center gap-1.5">
           <i data-lucide="terminal" class="w-4 h-4 text-ene-cyan"></i>
-          <span id="adminBtnText" class="hidden sm:inline">Admin Ene</span>
+          <span id="adminBtnText" class="hidden sm:inline">เฉพาะแอดมิน</span>
         </button>
       </div>
     </div>
@@ -152,25 +140,33 @@
 
   <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 md:p-8">
 
-    <div id="toast" class="fixed bottom-6 right-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
-      <div class="bg-[#081226] text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-ene-cyan/60 glow-cyan">
-        <span id="toastIcon"><i data-lucide="info" class="w-5 h-5 text-ene-cyan"></i></span>
-        <span id="toastMessage" class="text-sm font-medium font-prompt">ข้อความระบบ</span>
+    <!-- Instant Notification Banner (Zero delay, high visibility) -->
+    <div id="toast" class="hidden mb-6 bg-gradient-to-r from-cyan-950 via-[#0a1e3f] to-cyan-950 text-white p-4 rounded-2xl shadow-2xl border-2 border-ene-cyan glow-cyan flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div id="toastIconWrapper" class="w-9 h-9 rounded-xl bg-ene-cyan/20 border border-ene-cyan flex items-center justify-center flex-shrink-0 text-ene-cyan">
+          <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="text-xs font-mono font-bold text-ene-cyan uppercase">SYSTEM NOTIFICATION</h4>
+          <p id="toastMessage" class="text-sm font-semibold text-white font-prompt">Ene: บันทึกข้อมูลคิวสำเร็จเรียบร้อยค่ะ!</p>
+        </div>
       </div>
+      <button onclick="dismissToast()" class="text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
     </div>
 
-    <!-- ส่วน Voter View[cite: 7] -->
+    <!-- Voter View Section -->
     <section id="voterView" class="space-y-6">
       
+      <!-- Top Title Box -->
       <div class="relative overflow-hidden bg-gradient-to-br from-[#071329] via-[#050d1d] to-[#040814] border border-cyan-500/30 rounded-2xl p-6 sm:p-8 shadow-2xl">
-        <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-ene-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
-        
         <div class="relative z-10">
           <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
             <div class="flex items-center gap-2">
-              <span id="dbStatusBadge" class="inline-flex items-center gap-2 px-3 py-1 bg-cyan-950/80 border border-ene-cyan/40 rounded-full text-ene-cyan text-xs font-mono font-bold">
+              <span class="inline-flex items-center gap-2 px-3 py-1 bg-cyan-950/80 border border-ene-cyan/40 rounded-full text-ene-cyan text-xs font-mono font-bold">
                 <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
-                CONNECTING DATABASE...
+                SYSTEM STATUS: ACTIVE
               </span>
               <div class="flex items-end gap-1 h-5 px-2 bg-black/40 rounded-md border border-cyan-900/50">
                 <span class="eq-bar w-1 bg-ene-cyan rounded-full"></span>
@@ -182,7 +178,7 @@
             </div>
 
             <span class="px-3 py-1 bg-slate-900 border border-slate-700 text-slate-300 rounded-full text-xs font-mono">
-              EVENT DATE: 24 April 2027
+              24 เม.ย. 2570
             </span>
           </div>
 
@@ -192,35 +188,48 @@
 
           <p class="text-slate-300 mt-2 text-sm sm:text-base flex items-center gap-2 font-prompt">
             <i data-lucide="calendar" class="w-4 h-4 text-ene-cyan"></i>
-            กำหนดวันไพร: <span class="text-white font-semibold">วันเสาร์ที่ 24 เมษายน 2570 ณ สะพานเขียว-สวนลุม เวลา 10.00 - 18.00 น.</span>
+            กำหนดการถ่ายทำ: <span class="text-white font-semibold">วันพฤหัสบดีที่ 24 เมษายน 2570</span>
           </p>
 
           <div class="mt-4 flex items-start gap-3 bg-[#030814]/70 border border-cyan-900/50 p-3.5 rounded-xl text-xs text-slate-300 font-mono">
             <i data-lucide="bot" class="w-5 h-5 text-ene-cyan flex-shrink-0 mt-0.5"></i>
             <span class="leading-relaxed">
-              <strong class="text-ene-cyan font-bold">Ene:</strong> "เน่ ๆ นายท่านคะ! เลือกถ่ายคิวเดี่ยว 20 นาทีที่ต้องการ แล้วกดยืนยันได้เลยค่ะ! <span class="text-pink-400 font-semibold">เมื่อใครกดจองแล้ว คิวนั้นจะหายวับไปจากหน้าจอทุกคนทันทีแบบ Real-time เลยค่ะ!</span>"
+              <strong class="text-ene-cyan font-bold">Ene:</strong> "เลือกคิวที่ต้องการแล้วกดยืนยันได้เลย ตัวเลือกจะหายไปทันทีและแอดมินจะเป็นคนเดียวที่ดูผลสรุปได้ค่ะ!"
             </span>
           </div>
         </div>
       </div>
 
-      <!-- พื้นที่แสดงตัวเลือกคิว (จะขึ้นทันทีที่เปิดเว็บ)[cite: 7] -->
-      <div id="voterMainCardContainer"></div>
+      <!-- Quick Reset bar for testing -->
+      <div class="flex items-center justify-between bg-[#081226]/80 px-4 py-3 rounded-xl border border-cyan-900/40 text-xs">
+        <div class="text-slate-400 flex items-center gap-2 font-mono">
+          <i data-lucide="shield-check" class="w-4 h-4 text-ene-cyan"></i>
+          <span>PROTECTED RESULTS // ผลโหวตเห็นได้เฉพาะแอดมิน</span>
+        </div>
+        <button onclick="resetMyVotes()" class="text-ene-cyan hover:text-cyan-300 font-mono text-xs flex items-center gap-1.5 transition underline-offset-4 hover:underline">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          [ทดสอบ: ล้างสถานะการเลือกของฉัน]
+        </button>
+      </div>
+
+      <!-- Container: Form or Holo Pass (Replaced INSTANTLY on click) -->
+      <div id="voterMainCardContainer">
+        <!-- Rendered instantly by JavaScript -->
+      </div>
     </section>
 
-    <!-- ส่วน Admin View[cite: 7] -->
+    <!-- Admin View Section -->
     <section id="adminView" class="hidden space-y-6">
       
+      <!-- Admin Top Banner -->
       <div class="bg-gradient-to-r from-[#071329] via-[#091836] to-[#040914] text-white p-6 sm:p-7 rounded-2xl border border-cyan-500/40 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <div class="flex items-center gap-3">
-            <div class="p-2.5 bg-cyan-950/80 rounded-xl border border-ene-cyan/50 text-ene-cyan glow-cyan">
-              <i data-lucide="terminal" class="w-6 h-6"></i>
-            </div>
-            <div>
-              <h2 class="text-xl font-bold font-cyber tracking-wider text-white">ADMIN TERMINAL CONSOLE</h2>
-              <p class="text-xs text-ene-cyan font-mono mt-0.5">ระบบควบคุมและสรุปผลคิวถ่ายเดี่ยว Mekakucity Actors (LIVE DATABASE)</p>
-            </div>
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 bg-cyan-950/80 rounded-xl border border-ene-cyan/50 text-ene-cyan glow-cyan">
+            <i data-lucide="terminal" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold font-cyber tracking-wider text-white">ADMIN TERMINAL CONSOLE</h2>
+            <p class="text-xs text-ene-cyan font-mono mt-0.5">ระบบควบคุมและสรุปผลคิวถ่ายเดี่ยว Mekakucity Actors</p>
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
@@ -235,6 +244,7 @@
         </div>
       </div>
 
+      <!-- Stats Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono">
         <div class="bg-[#081226] p-5 rounded-xl border border-cyan-900/50 flex items-center justify-between">
           <div>
@@ -260,12 +270,12 @@
 
         <div class="bg-[#081226] p-5 rounded-xl border border-cyan-900/50 flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-400 uppercase">ACCESS PERMISSION</p>
+            <p class="text-xs text-slate-400 uppercase">PERMISSION</p>
             <h3 class="text-sm font-bold text-emerald-400 mt-2 flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              LIVE SYNC ACTIVE
+              ENE.ROOT GRANTED
             </h3>
-            <span class="text-[11px] text-slate-500">ซิงค์ฐานข้อมูลสด</span>
+            <span class="text-[11px] text-slate-500">สิทธิ์ผู้ดูแลระบบ</span>
           </div>
           <div class="p-3 bg-cyan-950 text-emerald-400 rounded-xl border border-cyan-800/40">
             <i data-lucide="shield" class="w-6 h-6"></i>
@@ -273,6 +283,7 @@
         </div>
       </div>
 
+      <!-- Time Slots Progress Breakdown -->
       <div class="bg-[#081226] rounded-2xl border border-slate-800 p-6 space-y-4">
         <div class="flex items-center justify-between border-b border-slate-800 pb-4">
           <div>
@@ -288,9 +299,12 @@
           </button>
         </div>
 
-        <div id="adminSlotsProgressList" class="space-y-3"></div>
+        <div id="adminSlotsProgressList" class="space-y-3">
+          <!-- Rendered by JavaScript -->
+        </div>
       </div>
 
+      <!-- Registered Cosplayers Table -->
       <div class="bg-[#081226] rounded-2xl border border-slate-800 p-6 space-y-4">
         <div class="flex items-center justify-between">
           <div>
@@ -312,19 +326,21 @@
                 <th class="py-3 px-4">ตัวละคร</th>
                 <th class="py-3 px-4">คิว</th>
                 <th class="py-3 px-4">ช่วงเวลา</th>
-                <th class="py-3 px-4">หมายเหตุ</th>
+                <th class="py-3 px-4">พร็อพ/หมายเหตุ</th>
                 <th class="py-3 px-4">เวลาลงทะเบียน</th>
                 <th class="py-3 px-4 text-center">ลบ</th>
               </tr>
             </thead>
-            <tbody id="adminEntriesTableBody" class="divide-y divide-slate-800/70 text-slate-200"></tbody>
+            <tbody id="adminEntriesTableBody" class="divide-y divide-slate-800/70 text-slate-200">
+              <!-- Rendered by JavaScript -->
+            </tbody>
           </table>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Login Modal[cite: 7] -->
+  <!-- Admin Login Modal -->
   <div id="loginModal" class="fixed inset-0 z-50 bg-[#02050c]/85 backdrop-blur-md hidden items-center justify-center p-4">
     <div class="bg-[#081226] rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-ene-cyan/60 glow-cyan">
       <div class="flex justify-between items-center mb-4">
@@ -340,7 +356,7 @@
       </div>
 
       <p class="text-xs text-slate-400 mb-4 leading-relaxed font-mono">
-        กรุณากรอกรหัสผ่านเพื่อเข้าสู่บ้านของเอเนะ
+        กรุณากรอกรหัสผ่านเพื่อเข้าสู่คอนโซลแอดมิน (รหัสผ่าน: <span class="bg-black text-ene-cyan px-1.5 py-0.5 rounded border border-cyan-800">admin123</span>)
       </p>
 
       <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
@@ -360,27 +376,20 @@
   </div>
 
   <script>
-    const firebaseConfig = {
-      databaseURL: "https://mekaku-queue-default-rtdb.asia-southeast1.firebasedatabase.app/"
-    };
-
-    let db = null;
-    let isConnected = false;
-
-    // ตัวเลือกตัวละคร[cite: 7]
+    // Character presets (Without Ene & Without Kuroha)
     const MEKAKU_CHARACTERS = [
-      { id: 'Ayano', name: 'Ayano', number: 'No. 0' },
-      { id: 'Kido', name: 'Kido', number: 'No. 1' },
-      { id: 'Seto', name: 'Seto', number: 'No. 2' },
-      { id: 'Kano', name: 'Kano', number: 'No. 3' },
-      { id: 'Marry', name: 'Marry', number: 'No. 4' },
-      { id: 'Momo', name: 'Momo', number: 'No. 5' },
-      { id: 'Shintaro', name: 'Shintaro', number: 'No. 7' },
-      { id: 'Hibiya', name: 'Hibiya', number: 'No. 8' },
-      { id: 'Konoha', name: 'Konoha', number: 'No. 9' },
+      { id: 'shintaro', name: 'Shintaro', number: 'No. 7' },
+      { id: 'kido', name: 'Kido', number: 'No. 1' },
+      { id: 'seto', name: 'Seto', number: 'No. 2' },
+      { id: 'kano', name: 'Kano', number: 'No. 3' },
+      { id: 'marry', name: 'Marry', number: 'No. 4' },
+      { id: 'momo', name: 'Momo', number: 'No. 5' },
+      { id: 'hibiya', name: 'Hibiya', number: 'No. 8' },
+      { id: 'konoha', name: 'Konoha', number: 'No. 9' },
+      { id: 'ayano', name: 'Ayano', number: 'No. 0' },
     ];
 
-    // คิวทั้ง 9 คิว[cite: 7]
+    // All 9 Queues (Queue 2 to 10)
     const TIME_SLOTS = [
       { id: 'q2', queueNumber: 2, time: '12.20 – 12.40 น.', label: 'คิวที่ 2' },
       { id: 'q3', queueNumber: 3, time: '12.40 – 13.00 น.', label: 'คิวที่ 3' },
@@ -393,100 +402,107 @@
       { id: 'q10', queueNumber: 10, time: '15.00 – 15.20 น.', label: 'คิวที่ 10' }
     ];
 
-    const ADMIN_PASS = 'Mm08061998'; //[cite: 7]
+    const ADMIN_PASS = 'admin123';
     let isAdminLoggedIn = false;
     let selectedSlotId = null;
-    let liveBookedEntries = [];
 
-    function initDatabase() {
+    function getStoredEntries() {
       try {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-        
-        db.ref('project_bookings').on('value', (snapshot) => {
-          isConnected = true;
-          updateStatusBadge(true);
-          const data = snapshot.val();
-          if (data) {
-            liveBookedEntries = Object.keys(data).map(key => ({
-              dbKey: key,
-              ...data[key]
-            }));
-          } else {
-            liveBookedEntries = [];
-          }
-          renderVoterView();
-          if (isAdminLoggedIn) renderAdminView();
-        }, (error) => {
-          console.warn("Database Error:", error);
-          updateStatusBadge(false);
-          fallbackToLocalStorage();
-        });
+        const data = localStorage.getItem('mekaku_ene_entries_final');
+        return data ? JSON.parse(data) : [];
       } catch (e) {
-        updateStatusBadge(false);
-        fallbackToLocalStorage();
+        return [];
       }
     }
 
-    function fallbackToLocalStorage() {
-      const local = localStorage.getItem('mekaku_fallback_bookings');
-      liveBookedEntries = local ? JSON.parse(local) : [];
-      renderVoterView();
-    }
-
-    function updateStatusBadge(online) {
-      const badge = document.getElementById('dbStatusBadge');
-      if (badge) {
-        if (online) {
-          badge.innerHTML = `<i data-lucide="wifi" class="w-3.5 h-3.5 text-emerald-400"></i> LIVE CLOUD CONNECTED`;
-          badge.className = "inline-flex items-center gap-2 px-3 py-1 bg-emerald-950/80 border border-emerald-500/40 rounded-full text-emerald-300 text-xs font-mono font-bold";
-        } else {
-          badge.innerHTML = `<i data-lucide="wifi-off" class="w-3.5 h-3.5 text-amber-400"></i> OFFLINE MODE (LOCAL ONLY)`;
-          badge.className = "inline-flex items-center gap-2 px-3 py-1 bg-amber-950/80 border border-amber-500/40 rounded-full text-amber-300 text-xs font-mono font-bold";
-        }
-        lucide.createIcons();
-      }
+    function saveEntries(entries) {
+      try {
+        localStorage.setItem('mekaku_ene_entries_final', JSON.stringify(entries));
+      } catch (e) {}
     }
 
     function getMySubmission() {
       try {
-        const data = sessionStorage.getItem('mekaku_my_pass');
+        const data = localStorage.getItem('mekaku_ene_my_vote_final');
         return data ? JSON.parse(data) : null;
-      } catch (e) { return null; }
+      } catch (e) {
+        return null;
+      }
     }
 
-    // วาดหน้าจอตัวเลือกคิว (คิวที่ถูกจองแล้วจะหายไป)[cite: 7]
+    function saveMySubmission(record) {
+      try {
+        localStorage.setItem('mekaku_ene_my_vote_final', JSON.stringify(record));
+      } catch (e) {}
+    }
+
+    function removeMySubmission() {
+      try {
+        localStorage.removeItem('mekaku_ene_my_vote_final');
+      } catch (e) {}
+    }
+
+    // Instant Notification Handler (No delay)
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMessage');
+      const iconWrapper = document.getElementById('toastIconWrapper');
+
+      if (!toast) return;
+
+      toastMsg.innerText = message;
+      if (type === 'success') {
+        iconWrapper.className = "w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-400 flex items-center justify-center flex-shrink-0 text-emerald-400";
+        iconWrapper.innerHTML = '<i data-lucide="check-circle-2" class="w-5 h-5"></i>';
+      } else if (type === 'error') {
+        iconWrapper.className = "w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-400 flex items-center justify-center flex-shrink-0 text-rose-400";
+        iconWrapper.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5"></i>';
+      } else {
+        iconWrapper.className = "w-9 h-9 rounded-xl bg-cyan-950 border border-ene-cyan flex items-center justify-center flex-shrink-0 text-ene-cyan";
+        iconWrapper.innerHTML = '<i data-lucide="info" class="w-5 h-5"></i>';
+      }
+
+      toast.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function dismissToast() {
+      const toast = document.getElementById('toast');
+      if (toast) toast.classList.add('hidden');
+    }
+
     function renderVoterView() {
       const container = document.getElementById('voterMainCardContainer');
       if (!container) return;
 
       const myRecord = getMySubmission();
 
+      // IF USER ALREADY SUBMITTED -> SHOW TICKET DIRECTLY
       if (myRecord) {
         const slot = TIME_SLOTS.find(s => s.id === myRecord.slotId);
         container.innerHTML = `
-          <div class="ene-holo-pass border-2 border-ene-cyan/70 rounded-3xl p-6 sm:p-8 shadow-2xl glow-cyan text-left relative overflow-hidden">
+          <div class="border-2 border-ene-cyan/80 bg-[#081226] rounded-3xl p-6 sm:p-8 shadow-2xl glow-cyan text-left relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-ene-cyan via-blue-500 to-ene-cyan"></div>
 
             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-cyan-900/60 pb-4 mb-6">
               <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full bg-[#040914] border-2 border-ene-cyan ene-icon-pulse overflow-hidden p-1 flex-shrink-0 flex items-center justify-center">
+                <div class="w-14 h-14 rounded-full bg-[#040914] border-2 border-ene-cyan overflow-hidden p-1 flex-shrink-0 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.7)]">
                   <img src="Ene_Error.webp" onerror="this.onerror=null; this.src='Ene_Error.jpg';" alt="Ene Pass Icon" class="w-full h-full object-contain" />
                 </div>
                 <div>
                   <span class="text-[10px] font-mono text-ene-cyan tracking-widest uppercase">ENE SYSTEM // ACCESS GRANTED</span>
-                  <h3 class="text-xl sm:text-2xl font-bold font-prompt text-white">เอเนะบันทึกเรียบร้อยแล้วค่ะ!</h3>
+                  <h3 class="text-xl sm:text-2xl font-bold font-prompt text-white">บันทึกคิวถ่ายเดี่ยวของคุณเรียบร้อยแล้ว!</h3>
                 </div>
               </div>
               <div class="px-3.5 py-1.5 bg-[#040914] border border-cyan-700/60 rounded-xl text-xs font-mono text-ene-cyan flex items-center gap-1.5">
                 <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
-                PASS: ENE-${Math.floor(1000 + Math.random() * 9000)}
+                PASS CONFIRMED
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#050c1b]/80 p-5 rounded-2xl border border-cyan-900/50 font-prompt">
               <div>
-                <span class="text-xs text-slate-400 font-mono uppercase">ชื่อเล่น (NickName):</span>
+                <span class="text-xs text-slate-400 font-mono uppercase">ชื่อเลเยอร์ (Cosplayer Name):</span>
                 <p class="text-lg font-bold text-white mt-0.5">${escapeHtml(myRecord.layerName)}</p>
               </div>
               <div>
@@ -516,11 +532,11 @@
             <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 font-mono">
               <div class="flex items-center gap-1.5 text-slate-300">
                 <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-                บันทึกคิวขึ้นระบบคลาวด์แล้ว แคปหน้านี้เก็บไว้ได้เลยนะคะ!
+                ตัวเลือกของคุณถูกซ่อนจากหน้านี้ทันทีตามที่ตั้งค่าไว้
               </div>
-              <button onclick="sessionStorage.removeItem('mekaku_my_pass'); renderVoterView();" class="text-xs text-ene-cyan hover:underline font-mono">
-                [ทดสอบ: เลือกคิวอื่นเพิ่ม]
-              </button>
+              <span class="text-[11px] text-slate-500">
+                Timestamp: ${new Date(myRecord.timestamp).toLocaleTimeString('th-TH')} น.
+              </span>
             </div>
           </div>
         `;
@@ -528,63 +544,57 @@
         return;
       }
 
-      const bookedIds = liveBookedEntries.map(e => e.slotId);
-      const availableSlots = TIME_SLOTS.filter(s => !bookedIds.includes(s.id));
-
+      // IF NOT SUBMITTED -> SHOW QUEUE CHOICES
       container.innerHTML = `
         <div id="votingFormWrapper" class="space-y-6">
           
+          <!-- Step 1: Select Time Slot -->
           <div class="bg-[#081226]/90 rounded-2xl border border-cyan-900/40 p-5 sm:p-7 shadow-xl">
             <div class="flex items-center justify-between mb-4">
               <div>
                 <span class="text-xs font-mono font-bold text-ene-cyan tracking-wider uppercase">[ STEP 01: SELECT SLOT ]</span>
-                <h3 class="text-lg font-bold font-prompt text-white">เลือกช่วงเวลาคิวถ่ายเดี่ยว</h3>
+                <h3 class="text-lg font-bold font-prompt text-white">เลือกช่วงเวลาคิวถ่ายเดี่ยว (1 ช่วงเวลา)</h3>
               </div>
-              <span class="text-xs font-mono text-cyan-300 font-bold">ว่าง ${availableSlots.length} / ${TIME_SLOTS.length} คิว</span>
+              <span class="text-xs text-slate-400 font-mono hidden sm:inline-block">20 MIN / SLOT</span>
             </div>
 
-            ${availableSlots.length === 0 ? `
-              <div class="p-8 text-center bg-cyan-950/30 border border-cyan-500/30 rounded-xl">
-                <p class="font-bold text-rose-400 font-prompt text-base">คิวถ่ายเดี่ยวเต็มทุกช่วงเวลาแล้วค่ะ!</p>
-                <p class="text-xs text-slate-400 font-mono mt-1">โปรดติดต่อแอดมินหรือตากล้องประจำโปรเจกต์นะคะ</p>
-              </div>
-            ` : `
-              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="slotsGrid">
-                ${availableSlots.map(slot => `
-                  <div 
-                    id="slot-btn-${slot.id}"
-                    onclick="selectSlot('${slot.id}')"
-                    class="cursor-pointer group relative p-4 rounded-xl border ${selectedSlotId === slot.id ? 'border-ene-cyan bg-cyan-950/60 glow-cyan' : 'border-slate-800 bg-[#040914]/80'} hover:bg-[#0c1833] hover:border-ene-cyan/80 transition-all select-none">
-                    
-                    <div class="flex items-center justify-between">
-                      <span class="text-xs font-mono font-bold px-2 py-0.5 rounded ${selectedSlotId === slot.id ? 'bg-ene-cyan text-black' : 'bg-cyan-950 text-ene-cyan'} border border-cyan-800/60 transition">
-                        ${slot.label}
-                      </span>
-                      <div class="w-5 h-5 rounded-full border ${selectedSlotId === slot.id ? 'bg-ene-cyan border-ene-cyan' : 'border-slate-700'} flex items-center justify-center transition">
-                        <i data-lucide="check" class="w-3 h-3 ${selectedSlotId === slot.id ? 'opacity-100 text-black' : 'opacity-0 text-ene-cyan'}"></i>
-                      </div>
-                    </div>
-
-                    <div class="mt-3">
-                      <div class="text-base font-bold font-mono text-white group-hover:text-ene-cyan transition">
-                        ${slot.time}
-                      </div>
-                      <div class="text-[11px] text-slate-400 font-mono mt-0.5">
-                        20 นาทีต่อคิว
-                      </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="slotsGrid">
+              ${TIME_SLOTS.map(slot => `
+                <div 
+                  id="slot-btn-${slot.id}"
+                  onclick="selectSlot('${slot.id}')"
+                  class="cursor-pointer group relative p-4 rounded-xl border border-slate-800 bg-[#040914]/80 hover:bg-[#0c1833] hover:border-ene-cyan/80 transition-all select-none">
+                  
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-cyan-950 text-ene-cyan border border-cyan-800/60 group-hover:bg-ene-cyan group-hover:text-black transition">
+                      ${slot.label}
+                    </span>
+                    <div id="check-icon-${slot.id}" class="w-5 h-5 rounded-full border border-slate-700 flex items-center justify-center transition group-hover:border-ene-cyan">
+                      <i data-lucide="check" class="w-3 h-3 text-ene-cyan opacity-0 transition-opacity"></i>
                     </div>
                   </div>
-                `).join('')}
-              </div>
-            `}
+
+                  <div class="mt-3">
+                    <div class="text-base font-bold font-mono text-white group-hover:text-ene-cyan transition">
+                      ${slot.time}
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-mono mt-0.5">
+                      20 นาทีต่อคิว
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
           </div>
 
+          <!-- Step 2: Cosplayer Information -->
           <div class="bg-[#081226]/90 rounded-2xl border border-cyan-900/40 p-5 sm:p-7 shadow-xl space-y-4">
             <div>
               <span class="text-xs font-mono font-bold text-ene-cyan tracking-wider uppercase">[ STEP 02: COSPLAYER INFO ]</span>
               <h3 class="text-lg font-bold font-prompt text-white">ข้อมูลเลเยอร์และตัวละคร</h3>
             </div>
 
+            <!-- Quick Character Selector Badges -->
             <div>
               <label class="block text-xs font-mono text-slate-300 mb-2">เลือกตัวละครด่วน (คลิกเลือกหรือพิมพ์เองได้):</label>
               <div class="flex flex-wrap gap-1.5">
@@ -592,7 +602,7 @@
                   <button 
                     type="button" 
                     onclick="pickCharacterPreset('${c.name}')" 
-                    class="text-xs font-mono px-3 py-1 rounded-lg bg-[#040914] border border-cyan-900/60 text-slate-300 hover:border-ene-cyan hover:text-ene-cyan transition flex items-center gap-1.5">
+                    class="char-badge text-xs font-mono px-3 py-1 rounded-lg bg-[#040914] border border-cyan-900/60 text-slate-300 hover:border-ene-cyan hover:text-ene-cyan transition flex items-center gap-1.5">
                     <span>${c.name}</span>
                     <span class="text-[10px] text-slate-500 font-mono">${c.number}</span>
                   </button>
@@ -622,23 +632,23 @@
               </div>
 
               <div class="sm:col-span-2">
-                <label class="block text-xs font-mono text-slate-300 mb-1.5">หมายเหตุเพิ่มเติม / พร็อพพิเศษ (ถ้ามี)</label>
+                <label class="block text-xs font-mono text-slate-300 mb-1.5">พร็อพที่เตรียมมา / หมายเหตุเพิ่มเติม (ถ้ามี)</label>
                 <input 
                   type="text" 
                   id="voterNotes" 
-                  placeholder="เช่น มีดาบ, ขอถ่ายโทนแสงเย็น, ต้องการคนช่วยสะบัดผ้า" 
+                  placeholder="เช่น มีพรอพร่ม/เก้าอี้, สะดวกสลับคิวถ้าถ่ายเสร็จไว" 
                   class="w-full px-4 py-2.5 rounded-xl bg-[#040914] border border-slate-700 focus:outline-none focus:border-ene-cyan text-sm text-white placeholder-slate-600 font-prompt">
               </div>
             </div>
 
+            <!-- Submit Button (INSTANT ZERO DELAY) -->
             <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div class="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
                 <i data-lucide="zap" class="w-4 h-4 text-ene-cyan"></i>
-                เมื่อกดเลือกแล้ว คิวนั้นจะถูกตัดออกจากระบบทันที
+                เมื่อกดเลือกแล้ว ตัวเลือกจะหายไปทันที (Instant 0ms)
               </div>
 
               <button 
-                type="button"
                 onclick="submitVoteAction()" 
                 id="submitVoteBtn"
                 class="w-full sm:w-auto px-7 py-3 bg-ene-cyan hover:bg-cyan-300 text-black font-cyber font-bold tracking-wider uppercase rounded-xl shadow-lg glow-cyan text-sm flex items-center justify-center gap-2 active:scale-95 transition-all">
@@ -654,7 +664,37 @@
 
     function selectSlot(slotId) {
       selectedSlotId = slotId;
-      renderVoterView();
+
+      TIME_SLOTS.forEach(slot => {
+        const btn = document.getElementById(`slot-btn-${slot.id}`);
+        const iconContainer = document.getElementById(`check-icon-${slot.id}`);
+        const iconCheck = iconContainer ? iconContainer.querySelector('i') : null;
+
+        if (slot.id === slotId) {
+          btn.classList.add('border-ene-cyan', 'bg-cyan-950/50', 'glow-cyan');
+          btn.classList.remove('border-slate-800', 'bg-[#040914]/80');
+          if (iconContainer) {
+            iconContainer.classList.add('bg-ene-cyan', 'border-ene-cyan');
+            iconContainer.classList.remove('border-slate-700');
+          }
+          if (iconCheck) {
+            iconCheck.classList.remove('opacity-0', 'text-ene-cyan');
+            iconCheck.classList.add('opacity-100', 'text-black');
+          }
+        } else {
+          btn.classList.remove('border-ene-cyan', 'bg-cyan-950/50', 'glow-cyan');
+          btn.classList.add('border-slate-800', 'bg-[#040914]/80');
+          if (iconContainer) {
+            iconContainer.classList.remove('bg-ene-cyan', 'border-ene-cyan');
+            iconContainer.classList.add('border-slate-700');
+          }
+          if (iconCheck) {
+            iconCheck.classList.add('opacity-0');
+            iconCheck.classList.remove('opacity-100', 'text-black');
+            iconCheck.classList.add('text-ene-cyan');
+          }
+        }
+      });
     }
 
     function pickCharacterPreset(name) {
@@ -665,16 +705,10 @@
       }
     }
 
+    // SUBMISSION WITH ZERO DELAY (0ms)
     function submitVoteAction() {
       if (!selectedSlotId) {
         showToast('กรุณาคลิกเลือกช่วงเวลาคิวถ่ายเดี่ยว', 'error');
-        return;
-      }
-
-      if (liveBookedEntries.some(e => e.slotId === selectedSlotId)) {
-        showToast('อุ๊ปส์! คิวนี้เพิ่งถูกคนอื่นจองไปแล้วค่ะ กรุณาเลือกคิวใหม่นะคะ', 'error');
-        selectedSlotId = null;
-        renderVoterView();
         return;
       }
 
@@ -687,7 +721,7 @@
       const notes = notesInput ? notesInput.value.trim() : '';
 
       if (!layerName) {
-        showToast('กรุณากรอกชื่อเลเยอร์ของคุณ', 'error');
+        showToast('กรุณากรอกชื่อเล่นของนายท่าน', 'error');
         if (layerInput) layerInput.focus();
         return;
       }
@@ -698,6 +732,7 @@
         return;
       }
 
+      // Prepare Record
       const newEntry = {
         id: 'mekaku-' + Date.now(),
         slotId: selectedSlotId,
@@ -707,33 +742,35 @@
         timestamp: new Date().toISOString()
       };
 
-      if (db && isConnected) {
-        db.ref('project_bookings').push(newEntry);
-      } else {
-        liveBookedEntries.push(newEntry);
-        localStorage.setItem('mekaku_fallback_bookings', JSON.stringify(liveBookedEntries));
-        renderVoterView();
-      }
+      // 1. Immediately Save to LocalStorage
+      const entries = getStoredEntries();
+      entries.push(newEntry);
+      saveEntries(entries);
+      saveMySubmission(newEntry);
 
-      sessionStorage.setItem('mekaku_my_pass', JSON.stringify(newEntry));
+      // 2. IMMEDIATELY Render Holographic Ticket Pass (0 delay)
+      renderVoterView();
 
+      // 3. IMMEDIATELY Show Success Banner (0 delay)
       showToast('Ene: บันทึกข้อมูลคิวสำเร็จเรียบร้อยค่ะ!', 'success');
-      selectedSlotId = null;
+      
+      // Scroll smoothly to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ส่วนแอดมิน[cite: 7]
     function renderAdminView() {
       const progressContainer = document.getElementById('adminSlotsProgressList');
       const tableBody = document.getElementById('adminEntriesTableBody');
       const totalVotersEl = document.getElementById('statTotalVoters');
       const entriesBadge = document.getElementById('entriesBadge');
 
-      const entries = liveBookedEntries;
+      const entries = getStoredEntries();
       const totalCount = entries.length;
 
       if (totalVotersEl) totalVotersEl.innerText = `${totalCount}`;
       if (entriesBadge) entriesBadge.innerText = `${totalCount} RECORDS`;
 
+      // 1. Render Progress
       if (progressContainer) {
         progressContainer.innerHTML = TIME_SLOTS.map(slot => {
           const slotEntries = entries.filter(e => e.slotId === slot.id);
@@ -753,7 +790,7 @@
               </div>
 
               <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
-                <div class="bg-gradient-to-r from-cyan-600 to-ene-cyan h-2 rounded-full transition-all duration-500" style="width: ${count > 0 ? 100 : 0}%"></div>
+                <div class="bg-gradient-to-r from-cyan-600 to-ene-cyan h-2 rounded-full" style="width: ${percentage}%"></div>
               </div>
 
               ${count > 0 ? `
@@ -773,6 +810,7 @@
         }).join('');
       }
 
+      // 2. Render Entries Table
       if (tableBody) {
         if (entries.length === 0) {
           tableBody.innerHTML = `
@@ -801,7 +839,7 @@
                 <td class="py-3 px-4 text-xs text-slate-400">${entry.notes ? escapeHtml(entry.notes) : '-'}</td>
                 <td class="py-3 px-4 font-mono text-xs text-slate-400">${timeStr} น.</td>
                 <td class="py-3 px-4 text-center">
-                  <button onclick="deleteSingleEntry('${entry.dbKey || entry.id}')" title="ลบรายการนี้" class="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 rounded transition">
+                  <button onclick="deleteSingleEntry('${entry.id}')" title="ลบรายการนี้" class="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 rounded transition">
                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                   </button>
                 </td>
@@ -831,7 +869,7 @@
 
         navAdminBtn.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-bold tracking-wider transition-all text-black bg-ene-cyan glow-cyan flex items-center gap-1.5";
         navVoterBtn.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-cyber font-semibold tracking-wider transition-all text-slate-300 hover:text-white bg-[#081226] hover:bg-[#112348] border border-cyan-500/30 flex items-center gap-1.5";
-        adminBtnText.innerText = "Admin Ene";
+        adminBtnText.innerText = "CONSOLE แอดมิน";
 
         renderAdminView();
       } else {
@@ -894,38 +932,36 @@
       switchView('voter');
     }
 
-    function deleteSingleEntry(dbKeyOrId) {
-      if (db && isConnected) {
-        db.ref(`project_bookings/${dbKeyOrId}`).remove().then(() => {
-          showToast('ลบรายการที่เลือกเรียบร้อยแล้ว', 'info');
-        });
-      } else {
-        liveBookedEntries = liveBookedEntries.filter(e => e.id !== dbKeyOrId);
-        localStorage.setItem('mekaku_fallback_bookings', JSON.stringify(liveBookedEntries));
-        renderAdminView();
-        showToast('ลบรายการที่เลือกแล้ว', 'info');
-      }
+    function resetMyVotes() {
+      removeMySubmission();
+      selectedSlotId = null;
+      renderVoterView();
+      showToast('รีเซ็ตสถานะแล้ว สามารถเลือกคิวทดสอบใหม่ได้ทันที', 'info');
+    }
+
+    function deleteSingleEntry(entryId) {
+      let entries = getStoredEntries();
+      entries = entries.filter(e => e.id !== entryId);
+      saveEntries(entries);
+      showToast('ลบรายการที่เลือกแล้ว', 'info');
+      renderAdminView();
     }
 
     function resetAllSlotVotes() {
-      if (!confirm("ต้องการรีเซ็ตคิวทั้งหมดและเปิดให้จองใหม่ใช่หรือไม่?")) return;
-
-      if (db && isConnected) {
-        db.ref('project_bookings').remove().then(() => {
-          showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
-        });
-      } else {
-        liveBookedEntries = [];
-        localStorage.removeItem('mekaku_fallback_bookings');
-        renderAdminView();
-        showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
+      if (getStoredEntries().length === 0) {
+        showToast('ยังไม่มีข้อมูลให้ล้าง', 'info');
+        return;
       }
+      saveEntries([]);
+      removeMySubmission();
+      showToast('ล้างตารางและผลโหวตทั้งหมดเรียบร้อยแล้ว', 'info');
+      renderAdminView();
     }
 
     function copySummaryToClipboard() {
-      const entries = liveBookedEntries;
+      const entries = getStoredEntries();
       let text = `📸 ตารางสรุปคิวถ่ายเดี่ยว - โปรคอส Mekakucity Actors\n`;
-      text += `📅 วันเสาร์ที่ 24 เมษายน 2570\n`;
+      text += `📅 วันพฤหัสบดีที่ 24 เมษายน 2570\n`;
       text += `==============================================\n`;
 
       TIME_SLOTS.forEach(slot => {
@@ -954,31 +990,6 @@
       document.body.removeChild(tempArea);
     }
 
-    function showToast(message, type = 'info') {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMessage');
-      const toastIcon = document.getElementById('toastIcon');
-
-      let iconHtml = '<i data-lucide="info" class="w-5 h-5 text-ene-cyan"></i>';
-      if (type === 'success') {
-        iconHtml = '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>';
-      } else if (type === 'error') {
-        iconHtml = '<i data-lucide="alert-triangle" class="w-5 h-5 text-rose-400"></i>';
-      }
-
-      toastIcon.innerHTML = iconHtml;
-      toastMsg.innerText = message;
-      lucide.createIcons();
-
-      toast.classList.remove('translate-y-24', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
-
-      setTimeout(() => {
-        toast.classList.add('translate-y-24', 'opacity-0');
-        toast.classList.remove('translate-y-0', 'opacity-100');
-      }, 1000);
-    }
-
     function escapeHtml(text) {
       if (!text) return '';
       return String(text)
@@ -989,9 +1000,10 @@
         .replace(/'/g, "&#039;");
     }
 
+    // Initialize application on page load
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      initDatabase();
+      renderVoterView();
     });
   </script>
 </body>
