@@ -717,15 +717,6 @@
 
       sessionStorage.setItem('mekaku_my_pass', JSON.stringify(newEntry));
 
-      try {
-        confetti({
-          particleCount: 65,
-          spread: 80,
-          origin: { y: 0.6 },
-          colors: ['#00f0ff', '#38bdf8', '#ffffff', '#0284c7']
-        });
-      } catch (e) {}
-
       showToast('Ene: บันทึกข้อมูลคิวสำเร็จเรียบร้อยค่ะ!', 'success');
       selectedSlotId = null;
     }
@@ -985,7 +976,7 @@
       setTimeout(() => {
         toast.classList.add('translate-y-24', 'opacity-0');
         toast.classList.remove('translate-y-0', 'opacity-100');
-      }, 3200);
+      }, 1000);
     }
 
     function escapeHtml(text) {
